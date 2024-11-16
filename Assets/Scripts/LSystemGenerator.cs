@@ -14,21 +14,13 @@ public class LSystemGenerator : MonoBehaviour
 {
     [SerializeField] private Transform _treeParent;
     [SerializeField] private LineRenderer _branchPrefab;
-    private string _axiom = "0";
 
     [Range(1, 10)]
     [SerializeField] private int _iterations = 1;
-    private Dictionary<char, string> _rules;
+
+    private MasterModel _treeData;
     private Stack<TransformStore> _transformStack = new();
     private StringBuilder _stringBuilder = new();
-
-    private void Awake()
-    {
-        _rules = new Dictionary<char, string> {
-            { '0', "1[0]0" },
-            { '1', "11" }
-        };
-    }
 
     private void Start()
     {
@@ -43,29 +35,39 @@ public class LSystemGenerator : MonoBehaviour
         }
     }
 
-    private void Update()
+    public void SetTreeData(MasterModel treeData)
     {
-        if (Input.GetKeyDown(KeyCode.Space) && _branchPrefab != null)
+        _treeData = treeData;
+    }
+
+    public void DestroyTree()
+    {
+        foreach (Transform child in _treeParent)
         {
-            if (_iterations < 1)
-            {
-                Debug.LogError("Iterations must be greater than 0.");
-                return;
-            }
-            GenerateLSystem();
+            Destroy(child.gameObject);
         }
     }
 
-    private void GenerateLSystem()
+    public void GenerateLSystem()
     {
-        string currentInputString = _axiom;
-        Debug.Log("iteration 0: " + currentInputString);
+        // TODO: Move tree data valdiation elsewhere
+        if (_treeData == null)
+        {
+            Debug.LogError("FAILED TO GENERATE: No tree data supplied.");
+            return;
+        }
+        if (_iterations < 1)
+        {
+            Debug.LogError("FAILED TO GENERATE: Iterations must be greater than 0.");
+            return;
+        }
+
+        string currentInputString = _treeData.Axiom;
 
         // Apply the rules to the string for the given number of iterations
         for (int i = 0; i < _iterations; i++)
         {
             currentInputString = ApplyTransformationRulesToString(currentInputString);
-            Debug.Log("iteration " + (i + 1) + ": " + currentInputString);
         }
 
         // Draw the L-System
@@ -75,48 +77,46 @@ public class LSystemGenerator : MonoBehaviour
     private string ApplyTransformationRulesToString(string inputString)
     {
         _stringBuilder.Clear();
+        Dictionary<char, DataRule> rules = _treeData.Rules;
 
         foreach (char c in inputString)
         {
-            _stringBuilder.Append(_rules.ContainsKey(c) ? _rules[c] : c.ToString());
+            _stringBuilder.Append(rules.ContainsKey(c) ? rules[c].Successor : c.ToString());
         }
         return _stringBuilder.ToString();
     }
 
     private void DrawLSystem(string inputString)
     {
-        float angle = 45f;
+        float angle = 25.7f;
 
         foreach (char c in inputString)
         {
-            switch (c)
-            {
-                case '0':
-                    DrawForward(0.4f);
-                    break;
-                case '1':
-                    DrawForward(1f);
-                    break;
-                case '[':
-                    _transformStack.Push(new TransformStore { _position = transform.position, _rotation = transform.rotation });
+            TurtleFunction turtleFunction = _treeData.Symbols[c].TurtleFunction;
 
-                    transform.Rotate(Vector3.up, -angle);
+            switch (turtleFunction)
+            {
+                case TurtleFunction.DrawForward:
+                    DrawForward(_treeData.Symbols[c].Line.Length);
                     break;
-                case ']':
+                case TurtleFunction.PushState:
+                    _transformStack.Push(new TransformStore { _position = transform.position, _rotation = transform.rotation });
+                    break;
+                case TurtleFunction.PopState:
                     TransformStore ts = _transformStack.Pop();
                     transform.position = ts._position;
                     transform.rotation = ts._rotation;
-
-                    transform.Rotate(Vector3.up, angle);
                     break;
-                // case '+':
-                //     transform.Rotate(Vector3.up, angle);
-                //     break;
-                // case '-':
-                //     transform.Rotate(Vector3.up, -angle);
-                //     break;
+                case TurtleFunction.RotateRight:
+                    transform.Rotate(Vector3.up, -angle);
+                    // transform.Rotate(Vector3.right, -angle);
+                    break;
+                case TurtleFunction.RotateLeft:
+                    transform.Rotate(Vector3.up, angle);
+                    // transform.Rotate(Vector3.right, angle);
+                    break;
                 default:
-                    Debug.LogError("Invalid character in L-System string: " + c);
+                    Debug.LogWarning("No Turtle Drawing behaviour for character " + c + " in L-System string.");
                     break;
             }
         }
