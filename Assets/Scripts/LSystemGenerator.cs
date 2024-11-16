@@ -81,7 +81,7 @@ public class LSystemGenerator : MonoBehaviour
 
         foreach (char c in inputString)
         {
-            _stringBuilder.Append(rules.ContainsKey(c) ? rules[c].Successor : c.ToString());
+            _stringBuilder.Append(rules.ContainsKey(c) ? rules[c].Successors[0] : c.ToString());
         }
         return _stringBuilder.ToString();
     }

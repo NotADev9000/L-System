@@ -1,10 +1,15 @@
 public class DataRule
 {
-    private string _successor;
-    public string Successor => _successor;
+    private string[] _successors = new string[2];
+    public string[] Successors => _successors;
 
-    public DataRule(string successor)
+    private float _stochasticChance;
+    public float StochasticChance => _stochasticChance;
+
+    public DataRule(string successor1, string successor2 = "", float stochasticChance = 1f)
     {
-        _successor = successor;
+        _successors[0] = successor1;
+        _successors[1] = successor2;
+        _stochasticChance = stochasticChance;
     }
 }
