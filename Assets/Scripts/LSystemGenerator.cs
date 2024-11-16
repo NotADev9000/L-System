@@ -62,6 +62,9 @@ public class LSystemGenerator : MonoBehaviour
             return;
         }
 
+        // Reset the transform stack
+        _transformStack.Clear();
+
         string currentInputString = _treeData.Axiom;
 
         // Apply the rules to the string for the given number of iterations
