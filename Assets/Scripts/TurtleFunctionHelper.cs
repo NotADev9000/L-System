@@ -13,13 +13,18 @@ public static class TurtleFunctionHelper
         { "Pop State", TurtleFunction.PopState }
     };
 
-    public static string[] GetDisplayNames()
+    public static List<string> GetDisplayNames()
     {
-        return _stringToEnum.Keys.ToArray();
+        return _stringToEnum.Keys.ToList();
     }
 
     public static TurtleFunction StringToFunction(string displayName)
     {
         return _stringToEnum.TryGetValue(displayName, out var function) ? function : TurtleFunction.None;
+    }
+
+    public static string FunctionToString(TurtleFunction function)
+    {
+        return _stringToEnum.First(entry => entry.Value == function).Key;
     }
 }

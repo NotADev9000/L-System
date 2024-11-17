@@ -1,8 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SymbolsController : MonoBehaviour
 {
@@ -11,8 +13,9 @@ public class SymbolsController : MonoBehaviour
     [SerializeField] private RectTransform _symbolGroupPrefab;
 
     private MasterModel _model;
+
     // Links the UI element (symbol group) to a DataSymbol instance
-    // This instance is passed to model upon any changes
+    // This instance is also referenced by the MasterModel
     private Dictionary<RectTransform, (char currentId, DataSymbol symbol)> _symbolGroups = new();
 
     private const char EmptyChar = '\0';
@@ -23,11 +26,11 @@ public class SymbolsController : MonoBehaviour
 
         foreach (KeyValuePair<char, DataSymbol> kvp in model.Symbols)
         {
-            InstantiateSymbolGroupUIElement(kvp.Key, kvp.Value);
+            CreateSymbolGroupUIElement(kvp.Key, kvp.Value);
         }
     }
 
-    private void InstantiateSymbolGroupUIElement(char dataSymbolId = EmptyChar, DataSymbol dataSymbol = null)
+    private void CreateSymbolGroupUIElement(char dataSymbolId = EmptyChar, DataSymbol dataSymbol = null)
     {
         dataSymbol ??= new();
         RectTransform symbolGroupUIElement = Instantiate(_symbolGroupPrefab, _symbolGroupParent);
@@ -35,20 +38,47 @@ public class SymbolsController : MonoBehaviour
         // Add new symbol group to dictionary
         _symbolGroups.Add(symbolGroupUIElement, (dataSymbolId, dataSymbol));
 
-        TMP_InputField inputField = symbolGroupUIElement.GetComponentInChildren<TMP_InputField>();
+        TMP_InputField idInputField = symbolGroupUIElement.GetComponentInChildren<TMP_InputField>();
+        TMP_Dropdown functionDropdown = symbolGroupUIElement.GetComponentInChildren<TMP_Dropdown>();
+        Toggle variableToggle = symbolGroupUIElement.GetComponentInChildren<Toggle>();
 
         // Set UI element fields
-        inputField.text = dataSymbolId.ToString();
+        idInputField.text = dataSymbolId.ToString();
+        functionDropdown.AddOptions(TurtleFunctionHelper.GetDisplayNames());
+        functionDropdown.value = (int)dataSymbol.TurtleFunction;
+        variableToggle.isOn = dataSymbol.IsVariable;
 
         // Add onChange listeners to UI elements
-        inputField.onValueChanged.AddListener((string newIdValue) => { UI_OnSymbolIdChanged(symbolGroupUIElement, newIdValue); });
+        idInputField.onValueChanged.AddListener((string newIdValue) => { UI_OnSymbolIdChanged(symbolGroupUIElement, newIdValue); });
+        functionDropdown.onValueChanged.AddListener((int newFunctionValue) => { UI_OnSymbolFunctionChanged(symbolGroupUIElement, newFunctionValue); });
+        variableToggle.onValueChanged.AddListener((bool isVariable) => { UI_OnVariableToggleChanged(symbolGroupUIElement, isVariable); });
+    }
+
+    private void DestroySymbolGroupUIElement(RectTransform symbolGroup)
+    {
+        char id = _symbolGroups[symbolGroup].currentId;
+        // Remove symbol from model if it exists
+        if (id != EmptyChar) _model.Symbols.Remove(id);
+        // Remove symbol group from the link
+        _symbolGroups.Remove(symbolGroup);
+        // Destroy the UI element
+        Destroy(symbolGroup.gameObject);
     }
 
     #region UI Callbacks
 
     public void UI_OnAddSymbolClicked()
     {
-        InstantiateSymbolGroupUIElement();
+        CreateSymbolGroupUIElement();
+    }
+
+    public void UI_OnRemoveSymbolClicked()
+    {
+        if (_symbolGroups.Count > 0)
+        {
+            RectTransform lastSymbolGroup = _symbolGroups.Keys.Last();
+            DestroySymbolGroupUIElement(lastSymbolGroup);
+        }
     }
 
     private void UI_OnSymbolIdChanged(RectTransform symbolGroup, string newIdValue)
@@ -73,6 +103,28 @@ public class SymbolsController : MonoBehaviour
             {
                 _model.Symbols[newId] = pair.symbol;
             }
+        }
+    }
+
+    private void UI_OnSymbolFunctionChanged(RectTransform symbolGroup, int newFunctionValue)
+    {
+        if (_symbolGroups.TryGetValue(symbolGroup, out var pair))
+        {
+            TurtleFunction newFunction = (TurtleFunction)newFunctionValue;
+
+            if (newFunction == pair.symbol.TurtleFunction) return;
+
+            // Update the function for UI data
+            pair.symbol.TurtleFunction = newFunction;
+        }
+    }
+
+    private void UI_OnVariableToggleChanged(RectTransform symbolGroup, bool isVariable)
+    {
+        if (_symbolGroups.TryGetValue(symbolGroup, out var pair))
+        {
+            // Update the variable for UI data
+            pair.symbol.IsVariable = isVariable;
         }
     }
 

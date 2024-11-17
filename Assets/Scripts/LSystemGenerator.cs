@@ -108,6 +108,11 @@ public class LSystemGenerator : MonoBehaviour
                         _transformStack.Push(new TransformStore { _position = transform.position, _rotation = transform.rotation });
                         break;
                     case TurtleFunction.PopState:
+                        if (_transformStack.Count == 0)
+                        {
+                            Debug.LogWarning("Tried to pop an empty transform stack!");
+                            break;
+                        }
                         TransformStore ts = _transformStack.Pop();
                         transform.position = ts._position;
                         transform.rotation = ts._rotation;
