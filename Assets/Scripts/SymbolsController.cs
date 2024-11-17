@@ -6,10 +6,13 @@ using UnityEngine;
 
 public class SymbolsController : MonoBehaviour
 {
+    [Header("UI Elements")]
     [SerializeField] private Transform _symbolGroupParent;
     [SerializeField] private RectTransform _symbolGroupPrefab;
 
     private MasterModel _model;
+    // Links the UI element (symbol group) to a DataSymbol instance
+    // This instance is passed to model upon any changes
     private Dictionary<RectTransform, (char currentId, DataSymbol symbol)> _symbolGroups = new();
 
     private const char EmptyChar = '\0';
@@ -20,28 +23,35 @@ public class SymbolsController : MonoBehaviour
 
         foreach (KeyValuePair<char, DataSymbol> kvp in model.Symbols)
         {
-            RectTransform symbolGroup = Instantiate(_symbolGroupPrefab, _symbolGroupParent);
-
-            TMP_InputField inputField = symbolGroup.GetComponentInChildren<TMP_InputField>();
-            inputField.text = kvp.Key.ToString();
-            inputField.onValueChanged.AddListener((string newIdValue) => { OnSymbolIdChanged(symbolGroup, newIdValue); });
-
-            _symbolGroups.Add(symbolGroup, (kvp.Key, kvp.Value));
+            InstantiateSymbolGroupUIElement(kvp.Key, kvp.Value);
         }
     }
 
-    public void UI_OnAddSymbolClicked()
+    private void InstantiateSymbolGroupUIElement(char dataSymbolId = EmptyChar, DataSymbol dataSymbol = null)
     {
-        RectTransform symbolGroup = Instantiate(_symbolGroupPrefab, _symbolGroupParent);
+        dataSymbol ??= new();
+        RectTransform symbolGroupUIElement = Instantiate(_symbolGroupPrefab, _symbolGroupParent);
 
-        DataSymbol symbol = new(false, TurtleFunction.None, null);
-        _symbolGroups.Add(symbolGroup, ('\0', symbol));
+        // Add new symbol group to dictionary
+        _symbolGroups.Add(symbolGroupUIElement, (dataSymbolId, dataSymbol));
 
-        TMP_InputField inputField = symbolGroup.GetComponentInChildren<TMP_InputField>();
-        inputField.onValueChanged.AddListener((string newIdValue) => { OnSymbolIdChanged(symbolGroup, newIdValue); });
+        TMP_InputField inputField = symbolGroupUIElement.GetComponentInChildren<TMP_InputField>();
+
+        // Set UI element fields
+        inputField.text = dataSymbolId.ToString();
+
+        // Add onChange listeners to UI elements
+        inputField.onValueChanged.AddListener((string newIdValue) => { UI_OnSymbolIdChanged(symbolGroupUIElement, newIdValue); });
     }
 
-    private void OnSymbolIdChanged(RectTransform symbolGroup, string newIdValue)
+    #region UI Callbacks
+
+    public void UI_OnAddSymbolClicked()
+    {
+        InstantiateSymbolGroupUIElement();
+    }
+
+    private void UI_OnSymbolIdChanged(RectTransform symbolGroup, string newIdValue)
     {
         if (_symbolGroups.TryGetValue(symbolGroup, out var pair))
         {
@@ -58,14 +68,13 @@ public class SymbolsController : MonoBehaviour
             // Update the ID for UI data
             _symbolGroups[symbolGroup] = (newId, pair.symbol);
 
-            // Add new ID to model if it isn't empty
+            // Add new ID to model if ID isn't empty
             if (newId != EmptyChar)
             {
                 _model.Symbols[newId] = pair.symbol;
             }
         }
-
-        Debug.Log(_model.Symbols);
-        Debug.Log(_model.Rules);
     }
+
+    #endregion
 }

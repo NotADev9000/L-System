@@ -12,7 +12,7 @@ public class DataSymbol
     private DataLine _line = null;
     public DataLine Line { get { return _line; } }
 
-    public DataSymbol(bool isVariable, TurtleFunction turtleFunction, DataLine line)
+    public DataSymbol(bool isVariable = false, TurtleFunction turtleFunction = TurtleFunction.None, DataLine line = null)
     {
         _isVariable = isVariable;
         _turtleFunction = turtleFunction;
