@@ -267,8 +267,9 @@ GameObject:
   m_Component:
   - component: {fileID: 251218265}
   - component: {fileID: 251218264}
+  - component: {fileID: 251218266}
   m_Layer: 0
-  m_Name: Controller
+  m_Name: Master
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -297,13 +298,28 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 251218263}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1110017172}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &251218266
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 251218263}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7c53b2451118374fa186ceff3b07fb8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _symbolGroupParent: {fileID: 1533931338}
+  _symbolGroupPrefab: {fileID: 7585400530869245979, guid: 69f7d184e0ed0864fb56eaf458785ff8,
+    type: 3}
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -1134,7 +1150,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1077850700}
   m_Layer: 0
-  m_Name: ---UI---
+  m_Name: ---UI Elements---
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1155,6 +1171,38 @@ Transform:
   m_Children:
   - {fileID: 1905826055}
   - {fileID: 1305120994}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1110017171
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1110017172}
+  m_Layer: 0
+  m_Name: ---Controllers---
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1110017172
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1110017171}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 251218265}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1201697540
@@ -1931,9 +1979,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1725120475}
   - component: {fileID: 1725120478}
+  - component: {fileID: 1725120479}
   - component: {fileID: 1725120477}
   - component: {fileID: 1725120476}
-  - component: {fileID: 1725120479}
   m_Layer: 0
   m_Name: btn_Add
   m_TagString: Untagged
@@ -2004,7 +2052,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1725120477}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 251218266}
+        m_TargetAssemblyTypeName: SymbolsController, Assembly-CSharp
+        m_MethodName: UI_OnAddSymbolClicked
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1725120477
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2882,7 +2942,7 @@ Transform:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 251218265}
+  - {fileID: 1110017172}
   - {fileID: 1959459948}
   - {fileID: 1201697541}
   - {fileID: 881944658}

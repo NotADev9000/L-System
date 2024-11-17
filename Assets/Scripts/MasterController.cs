@@ -12,28 +12,42 @@ public class MasterController : MonoBehaviour
     [SerializeField] private Vector3 _initialGeneratorRotation = new(-90f, 0, 0);
 
     private MasterModel _model;
+    private SymbolsController _symbolsController;
 
     private void Awake()
     {
         if (_generator == null) Debug.LogError("CONTROLLER: LSystemGenerator is not set in the inspector!");
 
+        _symbolsController = GetComponent<SymbolsController>();
+
+        BigOldTestData();
+    }
+
+    private void Start()
+    {
+        _symbolsController.SetModel(_model);
+        _generator.SetTreeData(_model);
+    }
+
+    private void BigOldTestData()
+    {
         /////////////////////////////////////
         // TEST DATA                       //
         /////////////////////////////////////
 
         string axiom = "K";
 
-        List<DataSymbol> dataSymbols = new List<DataSymbol>
+        Dictionary<char, DataSymbol> dataSymbols = new()
         {
-            new('F', true, TurtleFunction.DrawForward, new DataLine(1.0f, true, Color.green, null)),
-            new('K', true, TurtleFunction.DrawForward, new DataLine(0.5f, true, Color.red, null)),
-            new('+', false, TurtleFunction.RotateRight, null),
-            new('-', false, TurtleFunction.RotateLeft, null),
-            new('[', false, TurtleFunction.PushState, null),
-            new(']', false, TurtleFunction.PopState, null)
+            {'F', new(true, TurtleFunction.DrawForward, new DataLine(1.0f, true, Color.green, null))},
+            {'K', new(true, TurtleFunction.DrawForward, new DataLine(0.5f, true, Color.red, null))},
+            {'+', new(false, TurtleFunction.RotateRight, null)},
+            {'-', new(false, TurtleFunction.RotateLeft, null)},
+            {'[', new(false, TurtleFunction.PushState, null)},
+            {']', new(false, TurtleFunction.PopState, null)}
         };
 
-        Dictionary<char, DataRule> rulesDict = new Dictionary<char, DataRule>
+        Dictionary<char, DataRule> rulesDict = new()
         {
             { 'F', new DataRule("FF") },
             { 'K', new DataRule("F[+K]F[-K]+K") }
@@ -44,11 +58,6 @@ public class MasterController : MonoBehaviour
         /////////////////////////////////////
         // END TEST DATA                   //
         /////////////////////////////////////
-    }
-
-    private void Start()
-    {
-        _generator.SetTreeData(_model);
     }
 
     private void PrepareTreeGenerator()

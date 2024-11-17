@@ -7,19 +7,20 @@ public class MasterModel
     public Dictionary<char, DataSymbol> Symbols { get; private set; } = new();
     public Dictionary<char, DataRule> Rules { get; private set; } = new();
 
-    public MasterModel(string axiom, List<DataSymbol> symbols, Dictionary<char, DataRule> rulesDict)
+    public MasterModel(string axiom, Dictionary<char, DataSymbol> symbols, Dictionary<char, DataRule> rules)
     {
         Axiom = axiom;
+        Symbols = symbols;
+        Rules = rules;
 
-        foreach (DataSymbol symbol in symbols)
+        foreach (KeyValuePair<char, DataSymbol> kvp in symbols)
         {
-            // Convert list to dictionary using ID as key
-            Symbols.Add(symbol.Id, symbol);
+            DataSymbol symbol = kvp.Value;
 
-            if (symbol.IsVariable)
+            // If passed in rules dictionary is missing a rule for a variable symbol, add an empty rule
+            if (symbol.IsVariable && !rules.ContainsKey(kvp.Key))
             {
-                DataRule rule = rulesDict[symbol.Id] ?? new DataRule("");
-                Rules.Add(symbol.Id, rule);
+                Rules.Add(kvp.Key, new DataRule(""));
             }
         }
     }

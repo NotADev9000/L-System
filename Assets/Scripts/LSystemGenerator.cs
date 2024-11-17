@@ -95,32 +95,39 @@ public class LSystemGenerator : MonoBehaviour
 
         foreach (char c in inputString)
         {
-            TurtleFunction turtleFunction = _treeData.Symbols[c].TurtleFunction;
-
-            switch (turtleFunction)
+            if (_treeData.Symbols.TryGetValue(c, out DataSymbol symbol))
             {
-                case TurtleFunction.DrawForward:
-                    DrawForward(_treeData.Symbols[c].Line.Length);
-                    break;
-                case TurtleFunction.PushState:
-                    _transformStack.Push(new TransformStore { _position = transform.position, _rotation = transform.rotation });
-                    break;
-                case TurtleFunction.PopState:
-                    TransformStore ts = _transformStack.Pop();
-                    transform.position = ts._position;
-                    transform.rotation = ts._rotation;
-                    break;
-                case TurtleFunction.RotateRight:
-                    transform.Rotate(Vector3.up, -angle);
-                    // transform.Rotate(Vector3.right, -angle);
-                    break;
-                case TurtleFunction.RotateLeft:
-                    transform.Rotate(Vector3.up, angle);
-                    // transform.Rotate(Vector3.right, angle);
-                    break;
-                default:
-                    Debug.LogWarning("No Turtle Drawing behaviour for character " + c + " in L-System string.");
-                    break;
+                TurtleFunction turtleFunction = symbol.TurtleFunction;
+
+                switch (turtleFunction)
+                {
+                    case TurtleFunction.DrawForward:
+                        DrawForward(_treeData.Symbols[c].Line.Length);
+                        break;
+                    case TurtleFunction.PushState:
+                        _transformStack.Push(new TransformStore { _position = transform.position, _rotation = transform.rotation });
+                        break;
+                    case TurtleFunction.PopState:
+                        TransformStore ts = _transformStack.Pop();
+                        transform.position = ts._position;
+                        transform.rotation = ts._rotation;
+                        break;
+                    case TurtleFunction.RotateRight:
+                        transform.Rotate(Vector3.up, -angle);
+                        // transform.Rotate(Vector3.right, -angle);
+                        break;
+                    case TurtleFunction.RotateLeft:
+                        transform.Rotate(Vector3.up, angle);
+                        // transform.Rotate(Vector3.right, angle);
+                        break;
+                    default:
+                        Debug.LogWarning("No Turtle Drawing behaviour for character " + c + " in L-System string.");
+                        break;
+                }
+            }
+            else
+            {
+                Debug.LogWarning("No symbol found for character " + c + " in L-System string.");
             }
         }
     }
