@@ -92,17 +92,16 @@ public class LineController : MonoBehaviour
         colorDropdown.value = Array.IndexOf(MaterialsManager.Instance.Materials, dataLine.Color);
         // leafPrefabInputField.text = dataSymbol.LeafPrefab.ToString();
 
-        lengthInputField.onValueChanged.AddListener((string newLengthValue) => { UI_OnLengthChanged(lineGroupUIElement, newLengthValue); });
-        visibleToggle.onValueChanged.AddListener((bool newVisibleValue) => { UI_OnVisibleChanged(lineGroupUIElement, newVisibleValue); });
-        colorDropdown.onValueChanged.AddListener((int newColorValue) => { UI_OnColorChanged(lineGroupUIElement, newColorValue); });
+        lengthInputField.onValueChanged.AddListener((string newLengthValue) => { UI_OnLengthChanged(GetLineGroupId(lineGroupUIElement), newLengthValue); });
+        visibleToggle.onValueChanged.AddListener((bool newVisibleValue) => { UI_OnVisibleChanged(GetLineGroupId(lineGroupUIElement), newVisibleValue); });
+        colorDropdown.onValueChanged.AddListener((int newColorValue) => { UI_OnColorChanged(GetLineGroupId(lineGroupUIElement), newColorValue); });
         // leafPrefabInputField.onValueChanged.AddListener((string newLeafPrefabValue) => { UI_OnLeafPrefabChanged(lineGroupUIElement, newLeafPrefabValue); });
     }
 
     #region UI Callbacks
 
-    private void UI_OnLengthChanged(RectTransform lineGroupUIElement, string newLengthValue)
+    private void UI_OnLengthChanged(char id, string newLengthValue)
     {
-        char id = GetLineGroupId(lineGroupUIElement);
         try
         {
             float newLength = Math.Abs(Convert.ToSingle(newLengthValue));
@@ -115,15 +114,13 @@ public class LineController : MonoBehaviour
         }
     }
 
-    private void UI_OnVisibleChanged(RectTransform lineGroupUIElement, bool isVisible)
+    private void UI_OnVisibleChanged(char id, bool isVisible)
     {
-        char id = GetLineGroupId(lineGroupUIElement);
         _model.Symbols[id].Line.UpdateVisibility(isVisible);
     }
 
-    private void UI_OnColorChanged(RectTransform lineGroupUIElement, int colorDropdownIndex)
+    private void UI_OnColorChanged(char id, int colorDropdownIndex)
     {
-        char id = GetLineGroupId(lineGroupUIElement);
         _model.Symbols[id].Line.UpdateColor(MaterialsManager.Instance.Materials[colorDropdownIndex]);
     }
 
