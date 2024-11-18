@@ -291,6 +291,7 @@ MonoBehaviour:
   _generator: {fileID: 776546275}
   _initialGeneratorPosition: {x: 0, y: 0, z: 0}
   _initialGeneratorRotation: {x: -90, y: 0, z: 0}
+  _masterCanvasGO: {fileID: 1905826054}
 --- !u!4 &251218265
 Transform:
   m_ObjectHideFlags: 0

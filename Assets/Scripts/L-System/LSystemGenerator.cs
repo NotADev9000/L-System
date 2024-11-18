@@ -102,7 +102,7 @@ public class LSystemGenerator : MonoBehaviour
                 switch (turtleFunction)
                 {
                     case TurtleFunction.DrawForward:
-                        DrawForward(_treeData.Symbols[c].Line.Length);
+                        DrawForward(_treeData.Symbols[c].Line);
                         break;
                     case TurtleFunction.PushState:
                         _transformStack.Push(new TransformStore { _position = transform.position, _rotation = transform.rotation });
@@ -137,13 +137,16 @@ public class LSystemGenerator : MonoBehaviour
         }
     }
 
-    private void DrawForward(float length)
+    private void DrawForward(DataLine line)
     {
         LineRenderer branch = Instantiate(_branchPrefab, transform.position, transform.rotation, _treeParent);
-        Vector3 drawVector = transform.forward * length;
+        Vector3 drawVector = transform.forward * line.Length;
 
         branch.SetPosition(0, transform.position);
         branch.SetPosition(1, transform.position + drawVector);
+
+        if (!line.IsVisible)
+            branch.gameObject.SetActive(false);
 
         transform.position += drawVector;
     }

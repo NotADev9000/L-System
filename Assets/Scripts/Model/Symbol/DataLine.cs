@@ -23,4 +23,9 @@ public class DataLine
         _color = color;
         _leafPrefab = leafPrefab;
     }
+
+    public void UpdateLineLength(float newLength)
+    {
+        _length = newLength;
+    }
 }

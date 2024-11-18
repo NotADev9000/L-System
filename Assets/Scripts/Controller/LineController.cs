@@ -69,7 +69,7 @@ public class LineController : MonoBehaviour
         }
     }
 
-    private void CreateLineGroupUIElement(char dataSymbolId, DataLine dataSymbol)
+    private void CreateLineGroupUIElement(char dataSymbolId, DataLine dataLine)
     {
         RectTransform lineGroupUIElement = Instantiate(_lineGroupPrefab, _lineGroupParent);
 
@@ -79,7 +79,7 @@ public class LineController : MonoBehaviour
         // TMP_InputField leafPrefabInputField = lineGroupUIElement.GetComponentInChildren<TMP_InputField>();
 
         idTextLabel.text = dataSymbolId.ToString();
-        lengthInputField.text = dataSymbol.Length.ToString();
+        lengthInputField.text = dataLine.Length.ToString();
         // colorInputField.text = dataSymbol.Color.ToString();
         // leafPrefabInputField.text = dataSymbol.LeafPrefab.ToString();
 
@@ -92,7 +92,18 @@ public class LineController : MonoBehaviour
 
     private void UI_OnLengthChanged(RectTransform lineGroupUIElement, string newLengthValue)
     {
-
+        TMP_Text idTextLabel = lineGroupUIElement.GetComponentInChildren<TMP_Text>();
+        char id = idTextLabel.text[0];
+        try
+        {
+            float newLength = Math.Abs(Convert.ToSingle(newLengthValue));
+            _model.Symbols[id].Line.UpdateLineLength(newLength);
+        }
+        catch (FormatException)
+        {
+            Debug.LogWarning("Length value must be a number.");
+            return;
+        }
     }
 
     #endregion

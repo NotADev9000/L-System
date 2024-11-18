@@ -32,7 +32,7 @@ public class MasterModel
 
     private void AddSymbol(char id, DataSymbol dataSymbol)
     {
-        if (!Symbols.ContainsKey(id))
+        if (!Symbols.ContainsKey(id) && id != Char.MinValue)
         {
             Symbols.Add(id, dataSymbol);
         }
@@ -49,16 +49,16 @@ public class MasterModel
 
     public void UpdateSymbolId(char oldId, char newId, DataSymbol dataSymbol)
     {
-        RemoveSymbol(oldId, false);
+        RemoveSymbol(oldId, newId == Char.MinValue);
         AddSymbol(newId, dataSymbol);
         OnSymbolIdUpdated?.Invoke(oldId, newId);
     }
 
-    private void UpdateRule(char id, string successor)
-    {
-        if (Rules.ContainsKey(id))
-        {
-            Rules[id] = new DataRule(successor);
-        }
-    }
+    // private void UpdateRule(char id, string successor)
+    // {
+    //     if (Rules.ContainsKey(id))
+    //     {
+    //         Rules[id] = new DataRule(successor);
+    //     }
+    // }
 }
