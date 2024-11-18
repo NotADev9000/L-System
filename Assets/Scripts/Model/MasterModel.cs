@@ -7,6 +7,7 @@ public class MasterModel
     // Events subscribed to by UI controllers
     public static event Action<char> OnSymbolRemoved;
     public static event Action<char, char> OnSymbolIdUpdated;
+    public static event Action<char, TurtleFunction> OnFunctionUpdated;
 
     public string Axiom { get; private set; }
     public Dictionary<char, DataSymbol> Symbols { get; private set; } = new();
@@ -52,6 +53,15 @@ public class MasterModel
         RemoveSymbol(oldId, newId == Char.MinValue);
         AddSymbol(newId, dataSymbol);
         OnSymbolIdUpdated?.Invoke(oldId, newId);
+    }
+
+    public void UpdateSymbolFunction(char id, TurtleFunction newFunction)
+    {
+        if (Symbols.ContainsKey(id))
+        {
+            Symbols[id].TurtleFunction = newFunction;
+            OnFunctionUpdated?.Invoke(id, newFunction);
+        }
     }
 
     // private void UpdateRule(char id, string successor)

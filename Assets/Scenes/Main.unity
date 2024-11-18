@@ -337,7 +337,6 @@ MonoBehaviour:
   _lineGroupParent: {fileID: 685262698}
   _lineGroupPrefab: {fileID: 7585400530869245979, guid: 77f049c1acffaee4fb1a2cf62bf3f022,
     type: 3}
-  _lineWarningText: {fileID: 544066170}
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -375,7 +374,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.61089355, g: 0.7049681, b: 0.9056604, a: 1}
+  m_BackGroundColor: {r: 0.6556604, g: 0.76584905, b: 1, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
