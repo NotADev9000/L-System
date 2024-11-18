@@ -1,8 +1,13 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
 public class MasterModel
 {
+    // Events subscribed to by UI controllers
+    public static event Action<char> OnSymbolRemoved;
+    public static event Action<char, char> OnSymbolIdUpdated;
+
     public string Axiom { get; private set; }
     public Dictionary<char, DataSymbol> Symbols { get; private set; } = new();
     public Dictionary<char, DataRule> Rules { get; private set; } = new();
@@ -23,6 +28,30 @@ public class MasterModel
                 Rules.Add(kvp.Key, new DataRule(""));
             }
         }
+    }
+
+    private void AddSymbol(char id, DataSymbol dataSymbol)
+    {
+        if (!Symbols.ContainsKey(id))
+        {
+            Symbols.Add(id, dataSymbol);
+        }
+    }
+
+    public void RemoveSymbol(char id, bool invokeEvent = true)
+    {
+        if (Symbols.ContainsKey(id))
+        {
+            if (Symbols.Remove(id) && invokeEvent)
+                OnSymbolRemoved?.Invoke(id);
+        }
+    }
+
+    public void UpdateSymbolId(char oldId, char newId, DataSymbol dataSymbol)
+    {
+        RemoveSymbol(oldId, false);
+        AddSymbol(newId, dataSymbol);
+        OnSymbolIdUpdated?.Invoke(oldId, newId);
     }
 
     private void UpdateRule(char id, string successor)

@@ -11,14 +11,19 @@ public class MasterController : MonoBehaviour
     [SerializeField] private Vector3 _initialGeneratorPosition = new(0, 0, 0);
     [SerializeField] private Vector3 _initialGeneratorRotation = new(-90f, 0, 0);
 
+    [Header("UI References")]
+    [SerializeField] private GameObject _masterCanvasGO;
+
     private MasterModel _model;
     private SymbolsController _symbolsController;
+    private LineController _lineController;
 
     private void Awake()
     {
         if (_generator == null) Debug.LogError("CONTROLLER: LSystemGenerator is not set in the inspector!");
 
         _symbolsController = GetComponent<SymbolsController>();
+        _lineController = GetComponent<LineController>();
 
         BigOldTestData();
     }
@@ -26,7 +31,19 @@ public class MasterController : MonoBehaviour
     private void Start()
     {
         _symbolsController.SetModel(_model);
+        _lineController.SetModel(_model);
         _generator.SetTreeData(_model);
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            if (_masterCanvasGO != null)
+                _masterCanvasGO.SetActive(!_masterCanvasGO.activeSelf);
+            else
+                Debug.Log("_MasterCanvasGO is not set in the inspector!");
+        }
     }
 
     private void BigOldTestData()

@@ -8,10 +8,15 @@ public class DataLine
     public float Length { get { return _length; } }
 
     private bool _isVisible;
-    private Color _color;
-    private GameObject _leafPrefab;
+    public bool IsVisible { get { return _isVisible; } }
 
-    public DataLine(float length, bool isVisible, Color color, GameObject leafPrefab)
+    private Color _color;
+    public Color Color { get { return _color; } }
+
+    private GameObject _leafPrefab;
+    public GameObject LeafPrefab { get { return _leafPrefab; } }
+
+    public DataLine(float length = 1, bool isVisible = true, Color color = default, GameObject leafPrefab = null)
     {
         _length = length;
         _isVisible = isVisible;

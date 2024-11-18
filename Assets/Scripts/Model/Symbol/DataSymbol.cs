@@ -16,6 +16,6 @@ public class DataSymbol
     {
         _isVariable = isVariable;
         _turtleFunction = turtleFunction;
-        _line = line;
+        _line = line ?? new();
     }
 }

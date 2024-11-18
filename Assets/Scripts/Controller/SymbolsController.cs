@@ -18,8 +18,6 @@ public class SymbolsController : MonoBehaviour
     // This instance is also referenced by the MasterModel
     private Dictionary<RectTransform, (char currentId, DataSymbol symbol)> _symbolGroups = new();
 
-    private const char EmptyChar = '\0';
-
     public void SetModel(MasterModel model)
     {
         _model = model;
@@ -30,7 +28,7 @@ public class SymbolsController : MonoBehaviour
         }
     }
 
-    private void CreateSymbolGroupUIElement(char dataSymbolId = EmptyChar, DataSymbol dataSymbol = null)
+    private void CreateSymbolGroupUIElement(char dataSymbolId = Char.MinValue, DataSymbol dataSymbol = null)
     {
         dataSymbol ??= new();
         RectTransform symbolGroupUIElement = Instantiate(_symbolGroupPrefab, _symbolGroupParent);
@@ -58,7 +56,7 @@ public class SymbolsController : MonoBehaviour
     {
         char id = _symbolGroups[symbolGroup].currentId;
         // Remove symbol from model if it exists
-        if (id != EmptyChar) _model.Symbols.Remove(id);
+        _model.RemoveSymbol(id);
         // Remove symbol group from the link
         _symbolGroups.Remove(symbolGroup);
         // Destroy the UI element
@@ -85,24 +83,12 @@ public class SymbolsController : MonoBehaviour
     {
         if (_symbolGroups.TryGetValue(symbolGroup, out var pair))
         {
-            char newId = newIdValue.Length > 0 ? newIdValue[0] : EmptyChar;
-
+            char newId = newIdValue.Length > 0 ? newIdValue[0] : Char.MinValue;
             if (newId == pair.currentId) return;
 
-            // Remove old ID from model
-            if (pair.currentId != EmptyChar)
-            {
-                _model.Symbols.Remove(pair.currentId);
-            }
-
+            _model.UpdateSymbolId(pair.currentId, newId, pair.symbol);
             // Update the ID for UI data
             _symbolGroups[symbolGroup] = (newId, pair.symbol);
-
-            // Add new ID to model if ID isn't empty
-            if (newId != EmptyChar)
-            {
-                _model.Symbols[newId] = pair.symbol;
-            }
         }
     }
 
@@ -111,7 +97,6 @@ public class SymbolsController : MonoBehaviour
         if (_symbolGroups.TryGetValue(symbolGroup, out var pair))
         {
             TurtleFunction newFunction = (TurtleFunction)newFunctionValue;
-
             if (newFunction == pair.symbol.TurtleFunction) return;
 
             // Update the function for UI data
