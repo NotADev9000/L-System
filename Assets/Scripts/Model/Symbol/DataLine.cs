@@ -10,13 +10,13 @@ public class DataLine
     private bool _isVisible;
     public bool IsVisible { get { return _isVisible; } }
 
-    private Color _color;
-    public Color Color { get { return _color; } }
+    private Material _color;
+    public Material Color { get { return _color; } }
 
     private GameObject _leafPrefab;
     public GameObject LeafPrefab { get { return _leafPrefab; } }
 
-    public DataLine(float length = 1, bool isVisible = true, Color color = default, GameObject leafPrefab = null)
+    public DataLine(float length = 1, bool isVisible = true, Material color = default, GameObject leafPrefab = null)
     {
         _length = length;
         _isVisible = isVisible;
@@ -24,8 +24,18 @@ public class DataLine
         _leafPrefab = leafPrefab;
     }
 
-    public void UpdateLineLength(float newLength)
+    public void UpdateLength(float newLength)
     {
         _length = newLength;
+    }
+
+    public void UpdateVisibility(bool isVisible)
+    {
+        _isVisible = isVisible;
+    }
+
+    public void UpdateColor(Material newColor)
+    {
+        _color = newColor;
     }
 }

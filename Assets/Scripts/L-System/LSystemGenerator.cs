@@ -144,6 +144,7 @@ public class LSystemGenerator : MonoBehaviour
 
         branch.SetPosition(0, transform.position);
         branch.SetPosition(1, transform.position + drawVector);
+        branch.material = line.Color;
 
         if (!line.IsVisible)
             branch.gameObject.SetActive(false);

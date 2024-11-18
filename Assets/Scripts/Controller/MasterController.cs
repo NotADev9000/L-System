@@ -56,8 +56,8 @@ public class MasterController : MonoBehaviour
 
         Dictionary<char, DataSymbol> dataSymbols = new()
         {
-            {'F', new(true, TurtleFunction.DrawForward, new DataLine(1.0f, true, Color.green, null))},
-            {'K', new(true, TurtleFunction.DrawForward, new DataLine(0.5f, true, Color.red, null))},
+            {'F', new(true, TurtleFunction.DrawForward, new DataLine(1.0f, true, MaterialsManager.Instance.Materials[0], null))},
+            {'K', new(true, TurtleFunction.DrawForward, new DataLine(0.5f, true, MaterialsManager.Instance.Materials[0], null))},
             {'+', new(false, TurtleFunction.RotateRight, null)},
             {'-', new(false, TurtleFunction.RotateLeft, null)},
             {'[', new(false, TurtleFunction.PushState, null)},

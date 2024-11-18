@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Plane
+  m_Name: Brown
   m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -106,7 +106,7 @@ Material:
     - _Parallax: 0.005
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _Smoothness: 0
+    - _Smoothness: 0.458
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
@@ -115,9 +115,9 @@ Material:
     - _WorkflowMode: 0
     - _ZWrite: 1
     m_Colors:
-    - _BaseColor: {r: 0.40931243, g: 0.6792453, b: 0.38768244, a: 1}
-    - _Color: {r: 0.4093124, g: 0.6792453, b: 0.3876824, a: 1}
-    - _EmissionColor: {r: 0.16370085, g: 0.16981131, b: 0.0985226, a: 1}
+    - _BaseColor: {r: 0.7490196, g: 0.4745098, b: 0.42745098, a: 1}
+    - _Color: {r: 0.7490196, g: 0.47450978, b: 0.42745095, a: 1}
+    - _EmissionColor: {r: 0.015330188, g: 0.00666442, b: 0.006580411, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &4184451228850925512

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LineController : MonoBehaviour
 {
@@ -32,6 +33,11 @@ public class LineController : MonoBehaviour
         }
 
         if (!thereIsASymbolWithDrawFunc) _lineWarningText.gameObject.SetActive(true);
+    }
+
+    private char GetLineGroupId(RectTransform lineGroupUIElement)
+    {
+        return lineGroupUIElement.GetComponentInChildren<TMP_Text>().text[0];
     }
 
     private void SubscribeToModelEvents()
@@ -75,16 +81,20 @@ public class LineController : MonoBehaviour
 
         TMP_Text idTextLabel = lineGroupUIElement.GetComponentInChildren<TMP_Text>();
         TMP_InputField lengthInputField = lineGroupUIElement.GetComponentInChildren<TMP_InputField>();
-        // TMP_InputField colorInputField = lineGroupUIElement.GetComponentInChildren<TMP_InputField>();
+        Toggle visibleToggle = lineGroupUIElement.GetComponentInChildren<Toggle>();
+        TMP_Dropdown colorDropdown = lineGroupUIElement.GetComponentInChildren<TMP_Dropdown>();
         // TMP_InputField leafPrefabInputField = lineGroupUIElement.GetComponentInChildren<TMP_InputField>();
 
         idTextLabel.text = dataSymbolId.ToString();
         lengthInputField.text = dataLine.Length.ToString();
-        // colorInputField.text = dataSymbol.Color.ToString();
+        visibleToggle.isOn = dataLine.IsVisible;
+        colorDropdown.AddOptions(MaterialsManager.Instance.GetMaterialNames());
+        colorDropdown.value = Array.IndexOf(MaterialsManager.Instance.Materials, dataLine.Color);
         // leafPrefabInputField.text = dataSymbol.LeafPrefab.ToString();
 
         lengthInputField.onValueChanged.AddListener((string newLengthValue) => { UI_OnLengthChanged(lineGroupUIElement, newLengthValue); });
-        // colorInputField.onValueChanged.AddListener((string newColorValue) => { UI_OnColorChanged(lineGroupUIElement, newColorValue); });
+        visibleToggle.onValueChanged.AddListener((bool newVisibleValue) => { UI_OnVisibleChanged(lineGroupUIElement, newVisibleValue); });
+        colorDropdown.onValueChanged.AddListener((int newColorValue) => { UI_OnColorChanged(lineGroupUIElement, newColorValue); });
         // leafPrefabInputField.onValueChanged.AddListener((string newLeafPrefabValue) => { UI_OnLeafPrefabChanged(lineGroupUIElement, newLeafPrefabValue); });
     }
 
@@ -92,18 +102,29 @@ public class LineController : MonoBehaviour
 
     private void UI_OnLengthChanged(RectTransform lineGroupUIElement, string newLengthValue)
     {
-        TMP_Text idTextLabel = lineGroupUIElement.GetComponentInChildren<TMP_Text>();
-        char id = idTextLabel.text[0];
+        char id = GetLineGroupId(lineGroupUIElement);
         try
         {
             float newLength = Math.Abs(Convert.ToSingle(newLengthValue));
-            _model.Symbols[id].Line.UpdateLineLength(newLength);
+            _model.Symbols[id].Line.UpdateLength(newLength);
         }
         catch (FormatException)
         {
             Debug.LogWarning("Length value must be a number.");
             return;
         }
+    }
+
+    private void UI_OnVisibleChanged(RectTransform lineGroupUIElement, bool isVisible)
+    {
+        char id = GetLineGroupId(lineGroupUIElement);
+        _model.Symbols[id].Line.UpdateVisibility(isVisible);
+    }
+
+    private void UI_OnColorChanged(RectTransform lineGroupUIElement, int colorDropdownIndex)
+    {
+        char id = GetLineGroupId(lineGroupUIElement);
+        _model.Symbols[id].Line.UpdateColor(MaterialsManager.Instance.Materials[colorDropdownIndex]);
     }
 
     #endregion
