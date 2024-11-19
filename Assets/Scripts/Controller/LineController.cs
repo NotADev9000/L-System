@@ -146,7 +146,6 @@ public class LineController : MonoBehaviour
         catch (FormatException)
         {
             Debug.LogWarning("Length value must be a number.");
-            return;
         }
     }
 

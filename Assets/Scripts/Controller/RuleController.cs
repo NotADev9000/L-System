@@ -112,8 +112,18 @@ public class RuleController : MonoBehaviour
         ruleString2InputField.text = dataRule.Successor2;
         stochasticChanceInputField.text = ConvertStochasticChanceToDisplayString(dataRule.StochasticChance);
 
-        ruleString1InputField.onValueChanged.AddListener((string newRuleStringValue) => { UI_OnRuleString1Changed(GetRuleGroupId(ruleGroupUIElement), newRuleStringValue); });
-        ruleString2InputField.onValueChanged.AddListener((string newRuleStringValue) => { UI_OnRuleString2Changed(GetRuleGroupId(ruleGroupUIElement), newRuleStringValue); });
+        ruleString1InputField.onValueChanged.AddListener((string newRuleStringValue) =>
+        {
+            UI_OnRuleString1Changed(GetRuleGroupId(ruleGroupUIElement), newRuleStringValue);
+        });
+        ruleString2InputField.onValueChanged.AddListener((string newRuleStringValue) =>
+        {
+            UI_OnRuleString2Changed(GetRuleGroupId(ruleGroupUIElement), newRuleStringValue);
+        });
+        stochasticChanceInputField.onValueChanged.AddListener((string newChanceValue) =>
+        {
+            UI_OnStochasticChanceChanged(GetRuleGroupId(ruleGroupUIElement), newChanceValue, stochasticChanceInputField);
+        });
     }
 
     private void DestroyRuleGroupUIElementWithId(char id)
@@ -162,6 +172,23 @@ public class RuleController : MonoBehaviour
     private void UI_OnRuleString2Changed(char id, string newRuleString2Value)
     {
         _model.Symbols[id].Rule.UpdateSuccessor(2, newRuleString2Value);
+    }
+
+    private void UI_OnStochasticChanceChanged(char id, string newChanceValue, TMP_InputField stochasticChanceInputField)
+    {
+        float newChance;
+
+        try
+        {
+            newChance = Mathf.Clamp(Convert.ToSingle(newChanceValue), 0f, 100f);
+        }
+        catch (FormatException)
+        {
+            newChance = 0f;
+        }
+
+        if (newChanceValue != string.Empty) stochasticChanceInputField.text = newChance.ToString();
+        _model.Symbols[id].Rule.SetStochasticChance(newChance / 100f);
     }
 
     #endregion

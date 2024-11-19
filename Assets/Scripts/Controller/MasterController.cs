@@ -71,8 +71,8 @@ public class MasterController : MonoBehaviour
                       new DataLine(0.5f, true, MaterialsManager.Instance.Materials[3], null),
                       new DataRule("F[+K]F[-K]+K", "F[+K]K", 0.7f)
             )},
-            {'+', new(false, TurtleFunction.RotateRight)},
-            {'-', new(false, TurtleFunction.RotateLeft)},
+            {'+', new(false, TurtleFunction.TurnLeft)},
+            {'-', new(false, TurtleFunction.TurnRight)},
             {'[', new(false, TurtleFunction.PushState)},
             {']', new(false, TurtleFunction.PopState)}
         };

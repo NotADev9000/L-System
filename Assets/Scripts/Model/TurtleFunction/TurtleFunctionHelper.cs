@@ -7,8 +7,12 @@ public static class TurtleFunctionHelper
     {
         { "None", TurtleFunction.None },
         { "Draw Forward", TurtleFunction.DrawForward },
-        { "Rotate Right", TurtleFunction.RotateRight },
-        { "Rotate Left", TurtleFunction.RotateLeft },
+        { "Turn Left", TurtleFunction.TurnLeft },
+        { "Turn Right", TurtleFunction.TurnRight },
+        { "Pitch Down", TurtleFunction.PitchDown },
+        { "Pitch Up", TurtleFunction.PitchUp },
+        { "Roll Left", TurtleFunction.RollLeft },
+        { "Roll Right", TurtleFunction.RollRight },
         { "Push State", TurtleFunction.PushState },
         { "Pop State", TurtleFunction.PopState }
     };

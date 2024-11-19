@@ -21,7 +21,7 @@ public class DataRule
         _successors[successorNum - 1] = newSuccessor;
     }
 
-    private void SetStochasticChance(float newStochasticChance)
+    public void SetStochasticChance(float newStochasticChance)
     {
         _stochasticChance = Mathf.Clamp(newStochasticChance, 0f, 1f);
     }

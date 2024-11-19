@@ -2,8 +2,12 @@ public enum TurtleFunction
 {
     None,
     DrawForward,
-    RotateRight,
-    RotateLeft,
+    TurnLeft,
+    TurnRight,
+    PitchDown,
+    PitchUp,
+    RollLeft,
+    RollRight,
     PushState,
     PopState
 }

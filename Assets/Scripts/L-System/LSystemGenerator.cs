@@ -124,13 +124,23 @@ public class LSystemGenerator : MonoBehaviour
                         transform.position = ts._position;
                         transform.rotation = ts._rotation;
                         break;
-                    case TurtleFunction.RotateRight:
+                    case TurtleFunction.TurnLeft:
                         transform.Rotate(Vector3.up, -angle);
+                        break;
+                    case TurtleFunction.TurnRight:
+                        transform.Rotate(Vector3.up, angle);
+                        break;
+                    case TurtleFunction.PitchDown:
+                        transform.Rotate(Vector3.right, angle);
+                        break;
+                    case TurtleFunction.PitchUp:
                         transform.Rotate(Vector3.right, -angle);
                         break;
-                    case TurtleFunction.RotateLeft:
-                        transform.Rotate(Vector3.up, angle);
-                        transform.Rotate(Vector3.right, angle);
+                    case TurtleFunction.RollLeft:
+                        transform.Rotate(Vector3.forward, angle);
+                        break;
+                    case TurtleFunction.RollRight:
+                        transform.Rotate(Vector3.forward, -angle);
                         break;
                     default:
                         Debug.LogWarning("No Turtle Drawing behaviour for character " + c + " in L-System string.");
