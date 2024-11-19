@@ -109,6 +109,7 @@ public class SymbolsController : MonoBehaviour
     {
         if (_symbolGroups.TryGetValue(symbolGroup, out var pair))
         {
+            _model.UpdateSymbolIsVariable(pair.currentId, isVariable);
             // Update the variable for UI data
             pair.symbol.IsVariable = isVariable;
         }

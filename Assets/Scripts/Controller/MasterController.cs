@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using UnityEngine;
 
 public class MasterController : MonoBehaviour
@@ -17,13 +18,15 @@ public class MasterController : MonoBehaviour
     private MasterModel _model;
     private SymbolsController _symbolsController;
     private LineController _lineController;
+    private RuleController _ruleController;
 
     private void Awake()
     {
-        if (_generator == null) Debug.LogError("CONTROLLER: LSystemGenerator is not set in the inspector!");
+        if (_generator == null) Debug.LogError("CONTROLLER: Generator is not set in the inspector!");
 
         _symbolsController = GetComponent<SymbolsController>();
         _lineController = GetComponent<LineController>();
+        _ruleController = GetComponent<RuleController>();
     }
 
     private void Start()
@@ -32,6 +35,8 @@ public class MasterController : MonoBehaviour
 
         _symbolsController.SetModel(_model);
         _lineController.SetModel(_model);
+        _ruleController.SetModel(_model);
+
         _generator.SetTreeData(_model);
     }
 
@@ -56,21 +61,23 @@ public class MasterController : MonoBehaviour
 
         Dictionary<char, DataSymbol> dataSymbols = new()
         {
-            {'F', new(true, TurtleFunction.DrawForward, new DataLine(1.0f, true, MaterialsManager.Instance.Materials[0], null))},
-            {'K', new(true, TurtleFunction.DrawForward, new DataLine(0.5f, true, MaterialsManager.Instance.Materials[0], null))},
-            {'+', new(false, TurtleFunction.RotateRight, null)},
-            {'-', new(false, TurtleFunction.RotateLeft, null)},
-            {'[', new(false, TurtleFunction.PushState, null)},
-            {']', new(false, TurtleFunction.PopState, null)}
+            {'F', new(true,
+                      TurtleFunction.DrawForward,
+                      new DataLine(1.0f, true, MaterialsManager.Instance.Materials[0], null),
+                      new DataRule("FF")
+            )},
+            {'K', new(true,
+                      TurtleFunction.DrawForward,
+                      new DataLine(0.5f, true, MaterialsManager.Instance.Materials[3], null),
+                      new DataRule("F[+K]F[-K]+K")
+            )},
+            {'+', new(false, TurtleFunction.RotateRight)},
+            {'-', new(false, TurtleFunction.RotateLeft)},
+            {'[', new(false, TurtleFunction.PushState)},
+            {']', new(false, TurtleFunction.PopState)}
         };
 
-        Dictionary<char, DataRule> rulesDict = new()
-        {
-            { 'F', new DataRule("FF") },
-            { 'K', new DataRule("F[+K]F[-K]+K") }
-        };
-
-        _model = new MasterModel(axiom, dataSymbols, rulesDict);
+        _model = new MasterModel(axiom, dataSymbols);
 
         /////////////////////////////////////
         // END TEST DATA                   //

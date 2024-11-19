@@ -6,7 +6,7 @@ public class DataRule
     private float _stochasticChance;
     public float StochasticChance => _stochasticChance;
 
-    public DataRule(string successor1, string successor2 = "", float stochasticChance = 1f)
+    public DataRule(string successor1 = "", string successor2 = "", float stochasticChance = 1f)
     {
         _successors[0] = successor1;
         _successors[1] = successor2;

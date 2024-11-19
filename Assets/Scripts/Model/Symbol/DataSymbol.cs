@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -12,10 +13,17 @@ public class DataSymbol
     private DataLine _line = null;
     public DataLine Line { get { return _line; } }
 
-    public DataSymbol(bool isVariable = false, TurtleFunction turtleFunction = TurtleFunction.None, DataLine line = null)
+    private DataRule _rule = null;
+    public DataRule Rule { get { return _rule; } }
+
+    public DataSymbol(bool isVariable = false,
+    TurtleFunction turtleFunction = TurtleFunction.None,
+    DataLine line = null,
+    DataRule rule = null)
     {
         _isVariable = isVariable;
         _turtleFunction = turtleFunction;
         _line = line ?? new();
+        _rule = rule ?? new();
     }
 }

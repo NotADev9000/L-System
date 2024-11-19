@@ -80,11 +80,11 @@ public class LSystemGenerator : MonoBehaviour
     private string ApplyTransformationRulesToString(string inputString)
     {
         _stringBuilder.Clear();
-        Dictionary<char, DataRule> rules = _treeData.Rules;
+        Dictionary<char, DataSymbol> symbols = _treeData.Symbols;
 
         foreach (char c in inputString)
         {
-            _stringBuilder.Append(rules.ContainsKey(c) ? rules[c].Successors[0] : c.ToString());
+            _stringBuilder.Append(symbols.ContainsKey(c) && symbols[c].IsVariable ? symbols[c].Rule.Successors[0] : c.ToString());
         }
         return _stringBuilder.ToString();
     }
