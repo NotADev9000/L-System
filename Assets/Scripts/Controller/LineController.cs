@@ -56,6 +56,8 @@ public class LineController : MonoBehaviour
 
     private void OnSymbolIdUpdated(char oldId, char newId)
     {
+        bool existingLineGroupUpdated = false;
+
         // Update line group UI element with new ID
         foreach (Transform child in _lineGroupParent)
         {
@@ -63,9 +65,16 @@ public class LineController : MonoBehaviour
             if (idTextLabel.text == oldId.ToString())
             {
                 idTextLabel.text = newId.ToString();
-                Debug.Log("Line group ID updated");
+                existingLineGroupUpdated = true;
                 break;
             }
+        }
+
+        if (!existingLineGroupUpdated &&
+            newId != Char.MinValue &&
+            _model.Symbols[newId].TurtleFunction == TurtleFunction.DrawForward)
+        {
+            CreateLineGroupUIElement(newId, _model.Symbols[newId].Line);
         }
     }
 

@@ -24,12 +24,12 @@ public class MasterController : MonoBehaviour
 
         _symbolsController = GetComponent<SymbolsController>();
         _lineController = GetComponent<LineController>();
-
-        BigOldTestData();
     }
 
     private void Start()
     {
+        BigOldTestData();
+
         _symbolsController.SetModel(_model);
         _lineController.SetModel(_model);
         _generator.SetTreeData(_model);

@@ -100,6 +100,8 @@ public class SymbolsController : MonoBehaviour
             if (newFunction == pair.symbol.TurtleFunction) return;
 
             _model.UpdateSymbolFunction(pair.currentId, newFunction);
+            // Update the function for UI data
+            pair.symbol.TurtleFunction = newFunction;
         }
     }
 
