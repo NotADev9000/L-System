@@ -102,15 +102,18 @@ public class RuleController : MonoBehaviour
         RectTransform ruleGroupUIElement = Instantiate(_ruleGroupPrefab, _ruleGroupParent);
 
         TMP_Text idTextLabel = ruleGroupUIElement.GetComponentInChildren<TMP_Text>();
-        TMP_InputField[] ruleStringInputField = ruleGroupUIElement.GetComponentsInChildren<TMP_InputField>();
-        TMP_InputField ruleString1InputField = ruleStringInputField[0];
-        TMP_InputField ruleString2InputField = ruleStringInputField[1];
+        TMP_InputField[] ruleGroupInputFields = ruleGroupUIElement.GetComponentsInChildren<TMP_InputField>();
+        TMP_InputField ruleString1InputField = ruleGroupInputFields[0];
+        TMP_InputField stochasticChanceInputField = ruleGroupInputFields[1];
+        TMP_InputField ruleString2InputField = ruleGroupInputFields[2];
 
         idTextLabel.text = dataSymbolId.ToString();
-        ruleString1InputField.text = dataRule.Successors[0];
-        ruleString2InputField.text = dataRule.Successors[1];
+        ruleString1InputField.text = dataRule.Successor1;
+        ruleString2InputField.text = dataRule.Successor2;
+        stochasticChanceInputField.text = ConvertStochasticChanceToDisplayString(dataRule.StochasticChance);
 
-        // lengthInputField.onValueChanged.AddListener((string newLengthValue) => { UI_OnLengthChanged(GetLineGroupId(ruleGroupUIElement), newLengthValue); });
+        ruleString1InputField.onValueChanged.AddListener((string newRuleStringValue) => { UI_OnRuleString1Changed(GetRuleGroupId(ruleGroupUIElement), newRuleStringValue); });
+        ruleString2InputField.onValueChanged.AddListener((string newRuleStringValue) => { UI_OnRuleString2Changed(GetRuleGroupId(ruleGroupUIElement), newRuleStringValue); });
     }
 
     private void DestroyRuleGroupUIElementWithId(char id)
@@ -126,6 +129,11 @@ public class RuleController : MonoBehaviour
         }
     }
 
+    private char GetRuleGroupId(RectTransform ruleGroupUIElement)
+    {
+        return ruleGroupUIElement.GetComponentInChildren<TMP_Text>().text[0];
+    }
+
     private bool DoesRuleGroupUIElementExist(char id)
     {
         foreach (Transform child in _ruleGroupParent)
@@ -135,6 +143,25 @@ public class RuleController : MonoBehaviour
         }
 
         return false;
+    }
+
+    private string ConvertStochasticChanceToDisplayString(float stochasticChance)
+    {
+        return (stochasticChance * 100f).ToString();
+    }
+
+    #endregion
+
+    #region UI Callbacks
+
+    private void UI_OnRuleString1Changed(char id, string newRuleString1Value)
+    {
+        _model.Symbols[id].Rule.UpdateSuccessor(1, newRuleString1Value);
+    }
+
+    private void UI_OnRuleString2Changed(char id, string newRuleString2Value)
+    {
+        _model.Symbols[id].Rule.UpdateSuccessor(2, newRuleString2Value);
     }
 
     #endregion

@@ -84,14 +84,21 @@ public class LSystemGenerator : MonoBehaviour
 
         foreach (char c in inputString)
         {
-            _stringBuilder.Append(symbols.ContainsKey(c) && symbols[c].IsVariable ? symbols[c].Rule.Successors[0] : c.ToString());
+            DataSymbol symbol = symbols[c];
+            _stringBuilder.Append(symbols.ContainsKey(c) && symbol.IsVariable ? CalculateSuccessorString(symbol.Rule) : c.ToString());
         }
         return _stringBuilder.ToString();
     }
 
+    private string CalculateSuccessorString(DataRule rule)
+    {
+        if (rule.StochasticChance == 0) return rule.Successor1;
+        return rule.Successor2 != null && UnityEngine.Random.value < rule.StochasticChance ? rule.Successor2 : rule.Successor1;
+    }
+
     private void DrawLSystem(string inputString)
     {
-        float angle = 25.7f;
+        float angle = 24.7f;
 
         foreach (char c in inputString)
         {
@@ -119,11 +126,11 @@ public class LSystemGenerator : MonoBehaviour
                         break;
                     case TurtleFunction.RotateRight:
                         transform.Rotate(Vector3.up, -angle);
-                        // transform.Rotate(Vector3.right, -angle);
+                        transform.Rotate(Vector3.right, -angle);
                         break;
                     case TurtleFunction.RotateLeft:
                         transform.Rotate(Vector3.up, angle);
-                        // transform.Rotate(Vector3.right, angle);
+                        transform.Rotate(Vector3.right, angle);
                         break;
                     default:
                         Debug.LogWarning("No Turtle Drawing behaviour for character " + c + " in L-System string.");

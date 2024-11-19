@@ -64,12 +64,12 @@ public class MasterController : MonoBehaviour
             {'F', new(true,
                       TurtleFunction.DrawForward,
                       new DataLine(1.0f, true, MaterialsManager.Instance.Materials[0], null),
-                      new DataRule("FF")
+                      new DataRule("FF", "F", 0.6f)
             )},
             {'K', new(true,
                       TurtleFunction.DrawForward,
                       new DataLine(0.5f, true, MaterialsManager.Instance.Materials[3], null),
-                      new DataRule("F[+K]F[-K]+K")
+                      new DataRule("F[+K]F[-K]+K", "F[+K]K", 0.7f)
             )},
             {'+', new(false, TurtleFunction.RotateRight)},
             {'-', new(false, TurtleFunction.RotateLeft)},
