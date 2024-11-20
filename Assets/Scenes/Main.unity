@@ -1640,9 +1640,12 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 35fce8c65f4cfbe40a89617b93bf04ca, type: 2}
   - {fileID: 2100000, guid: 4ecdf1f83a1d03445aa6968708342500, type: 2}
   - {fileID: 2100000, guid: 8cc15ca5fee42b347941670262077c8e, type: 2}
+  - {fileID: 2100000, guid: 4753853365b1c42449762a463ada3cea, type: 2}
   - {fileID: 2100000, guid: 5a08431a44247e543b8eefd52b7afd6b, type: 2}
   - {fileID: 2100000, guid: 03b9a58aba1a61c48b3a0b0fe249d17b, type: 2}
+  - {fileID: 2100000, guid: b6137a7d21a51d14794e5561bcc578bc, type: 2}
   - {fileID: 2100000, guid: ab937a7a210702241ae0cb288270eee9, type: 2}
+  - {fileID: 2100000, guid: 0047ce755bd70c048b1976a4e3a7b56b, type: 2}
 --- !u!1 &520796137
 GameObject:
   m_ObjectHideFlags: 0
@@ -8639,14 +8642,14 @@ MonoBehaviour:
   m_VerticalScrollbarEventHandler: {fileID: 0}
   m_LayoutGroup: {fileID: 0}
   m_ScrollSensitivity: 1
-  m_ContentType: 2
+  m_ContentType: 0
   m_InputType: 0
   m_AsteriskChar: 42
-  m_KeyboardType: 4
+  m_KeyboardType: 0
   m_LineType: 0
   m_HideMobileInput: 0
   m_HideSoftKeyboard: 0
-  m_CharacterValidation: 2
+  m_CharacterValidation: 0
   m_RegexValue: 
   m_GlobalPointSize: 14
   m_CharacterLimit: 2
