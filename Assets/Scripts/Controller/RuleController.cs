@@ -9,6 +9,7 @@ public class RuleController : MonoBehaviour
     [Header("UI Elements")]
     [SerializeField] private Transform _ruleGroupParent;
     [SerializeField] private RectTransform _ruleGroupPrefab;
+    [SerializeField] private TMP_InputField _axiomInputField;
 
     private MasterModel _model;
 
@@ -32,6 +33,8 @@ public class RuleController : MonoBehaviour
             if (kvp.Value.IsVariable)
                 CreateRuleGroupUIElement(kvp.Key, kvp.Value.Rule);
         }
+
+        _axiomInputField.SetTextWithoutNotify(_model.Axiom);
     }
 
     #region Model Events
@@ -189,6 +192,11 @@ public class RuleController : MonoBehaviour
 
         if (newChanceValue != string.Empty) stochasticChanceInputField.text = newChance.ToString();
         _model.Symbols[id].Rule.SetStochasticChance(newChance / 100f);
+    }
+
+    public void UI_OnAxiomChanged(string newAxiom)
+    {
+        _model.Axiom = newAxiom;
     }
 
     #endregion

@@ -28,7 +28,7 @@ public class GeneralController : MonoBehaviour
 
     #region UI Callbacks
 
-    public void OnIterationsChanged(string iterations)
+    public void UI_OnIterationsChanged(string iterations)
     {
         int iterationsNum = 1;
         try
@@ -41,7 +41,7 @@ public class GeneralController : MonoBehaviour
         _model.Iterations = iterationsNum;
     }
 
-    public void OnAngleChanged(string angle)
+    public void UI_OnAngleChanged(string angle)
     {
         float angleNum = 0f;
         try
@@ -54,7 +54,7 @@ public class GeneralController : MonoBehaviour
         _model.Angle = angleNum;
     }
 
-    public void OnAngleOffsetChanged(string angleOffset)
+    public void UI_OnAngleOffsetChanged(string angleOffset)
     {
         float angleOffsetNum = 0f;
         try
