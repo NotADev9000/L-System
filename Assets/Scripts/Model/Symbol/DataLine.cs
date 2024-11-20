@@ -16,11 +16,11 @@ public class DataLine
     private GameObject _leafPrefab;
     public GameObject LeafPrefab { get { return _leafPrefab; } }
 
-    public DataLine(float length = 1, bool isVisible = true, Material color = default, GameObject leafPrefab = null)
+    public DataLine(float length = 1, bool isVisible = true, Material color = null, GameObject leafPrefab = null)
     {
         _length = length;
         _isVisible = isVisible;
-        _color = color;
+        _color = color ?? MaterialsManager.Instance.Materials[0];
         _leafPrefab = leafPrefab;
     }
 
