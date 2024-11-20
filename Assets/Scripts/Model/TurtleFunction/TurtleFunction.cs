@@ -8,6 +8,7 @@ public enum TurtleFunction
     PitchUp,
     RollLeft,
     RollRight,
+    Turn180,
     PushState,
     PopState
 }

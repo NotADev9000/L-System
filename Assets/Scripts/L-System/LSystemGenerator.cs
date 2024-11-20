@@ -142,6 +142,9 @@ public class LSystemGenerator : MonoBehaviour
                     case TurtleFunction.RollRight:
                         transform.Rotate(Vector3.forward, -angle);
                         break;
+                    case TurtleFunction.Turn180:
+                        transform.Rotate(Vector3.up, 180);
+                        break;
                     default:
                         Debug.LogWarning("No Turtle Drawing behaviour for character " + c + " in L-System string.");
                         break;

@@ -13,6 +13,7 @@ public static class TurtleFunctionHelper
         { "Pitch Up", TurtleFunction.PitchUp },
         { "Roll Left", TurtleFunction.RollLeft },
         { "Roll Right", TurtleFunction.RollRight },
+        { "Turn 180°", TurtleFunction.Turn180 },
         { "Push State", TurtleFunction.PushState },
         { "Pop State", TurtleFunction.PopState }
     };
