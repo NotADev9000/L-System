@@ -76,8 +76,7 @@ public class LSystemGenerator : MonoBehaviour
 
         foreach (char c in inputString)
         {
-            DataSymbol symbol = symbols[c];
-            _stringBuilder.Append(symbols.ContainsKey(c) && symbol.IsVariable ? CalculateSuccessorString(symbol.Rule) : c.ToString());
+            _stringBuilder.Append(symbols.ContainsKey(c) && symbols[c].IsVariable ? CalculateSuccessorString(symbols[c].Rule) : c.ToString());
         }
         return _stringBuilder.ToString();
     }
