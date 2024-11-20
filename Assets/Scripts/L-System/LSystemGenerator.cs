@@ -15,9 +15,6 @@ public class LSystemGenerator : MonoBehaviour
     [SerializeField] private Transform _treeParent;
     [SerializeField] private LineRenderer _branchPrefab;
 
-    [Range(1, 10)]
-    [SerializeField] private int _iterations = 1;
-
     private MasterModel _treeData;
     private Stack<TransformStore> _transformStack = new();
     private StringBuilder _stringBuilder = new();
@@ -56,11 +53,6 @@ public class LSystemGenerator : MonoBehaviour
             Debug.LogError("FAILED TO GENERATE: No tree data supplied.");
             return;
         }
-        if (_iterations < 1)
-        {
-            Debug.LogError("FAILED TO GENERATE: Iterations must be greater than 0.");
-            return;
-        }
 
         // Reset the transform stack
         _transformStack.Clear();
@@ -68,7 +60,7 @@ public class LSystemGenerator : MonoBehaviour
         string currentInputString = _treeData.Axiom;
 
         // Apply the rules to the string for the given number of iterations
-        for (int i = 0; i < _iterations; i++)
+        for (int i = 0; i < _treeData.Iterations; i++)
         {
             currentInputString = ApplyTransformationRulesToString(currentInputString);
         }
@@ -98,8 +90,6 @@ public class LSystemGenerator : MonoBehaviour
 
     private void DrawLSystem(string inputString)
     {
-        float angle = 24.7f;
-
         foreach (char c in inputString)
         {
             if (_treeData.Symbols.TryGetValue(c, out DataSymbol symbol))
@@ -125,25 +115,25 @@ public class LSystemGenerator : MonoBehaviour
                         transform.rotation = ts._rotation;
                         break;
                     case TurtleFunction.TurnLeft:
-                        transform.Rotate(Vector3.up, -angle);
+                        RotateTurtle(Vector3.up, false);
                         break;
                     case TurtleFunction.TurnRight:
-                        transform.Rotate(Vector3.up, angle);
+                        RotateTurtle(Vector3.up, true);
                         break;
                     case TurtleFunction.PitchDown:
-                        transform.Rotate(Vector3.right, angle);
+                        RotateTurtle(Vector3.right, true);
                         break;
                     case TurtleFunction.PitchUp:
-                        transform.Rotate(Vector3.right, -angle);
+                        RotateTurtle(Vector3.right, false);
                         break;
                     case TurtleFunction.RollLeft:
-                        transform.Rotate(Vector3.forward, angle);
+                        RotateTurtle(Vector3.forward, true);
                         break;
                     case TurtleFunction.RollRight:
-                        transform.Rotate(Vector3.forward, -angle);
+                        RotateTurtle(Vector3.forward, false);
                         break;
                     case TurtleFunction.Turn180:
-                        transform.Rotate(Vector3.up, 180);
+                        RotateTurtle(Vector3.up, true);
                         break;
                     default:
                         Debug.LogWarning("No Turtle Drawing behaviour for character " + c + " in L-System string.");
@@ -170,5 +160,18 @@ public class LSystemGenerator : MonoBehaviour
             branch.gameObject.SetActive(false);
 
         transform.position += drawVector;
+    }
+
+    private void RotateTurtle(Vector3 axis, bool isPositiveRotation)
+    {
+        float angle = _treeData.Angle * (isPositiveRotation ? 1 : -1);
+        angle = ApplyAngleOffset(angle);
+        transform.Rotate(axis, angle);
+    }
+
+    private float ApplyAngleOffset(float angle)
+    {
+        float randomOffset = UnityEngine.Random.Range(-_treeData.AngleOffset, _treeData.AngleOffset);
+        return angle + randomOffset;
     }
 }

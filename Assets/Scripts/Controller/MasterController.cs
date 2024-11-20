@@ -19,6 +19,7 @@ public class MasterController : MonoBehaviour
     private SymbolsController _symbolsController;
     private LineController _lineController;
     private RuleController _ruleController;
+    private GeneralController _generalController;
 
     private void Awake()
     {
@@ -27,6 +28,7 @@ public class MasterController : MonoBehaviour
         _symbolsController = GetComponent<SymbolsController>();
         _lineController = GetComponent<LineController>();
         _ruleController = GetComponent<RuleController>();
+        _generalController = GetComponent<GeneralController>();
     }
 
     private void Start()
@@ -36,6 +38,7 @@ public class MasterController : MonoBehaviour
         _symbolsController.SetModel(_model);
         _lineController.SetModel(_model);
         _ruleController.SetModel(_model);
+        _generalController.SetModel(_model);
 
         _generator.SetTreeData(_model);
     }
@@ -57,6 +60,9 @@ public class MasterController : MonoBehaviour
         // TEST DATA                       //
         /////////////////////////////////////
 
+        int iterations = 1;
+        float angle = 25.7f;
+        float angleOffset = 0.0f;
         string axiom = "K";
 
         Dictionary<char, DataSymbol> dataSymbols = new()
@@ -77,7 +83,7 @@ public class MasterController : MonoBehaviour
             {']', new(false, TurtleFunction.PopState)}
         };
 
-        _model = new MasterModel(axiom, dataSymbols);
+        _model = new MasterModel(iterations, angle, angleOffset, dataSymbols, axiom);
 
         /////////////////////////////////////
         // END TEST DATA                   //

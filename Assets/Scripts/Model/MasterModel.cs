@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class MasterModel
 {
@@ -10,13 +11,19 @@ public class MasterModel
     public static event Action<char, TurtleFunction> OnFunctionUpdated;
     public static event Action<char, bool> OnIsVariableUpdated;
 
-    public string Axiom { get; private set; }
+    public int Iterations { get; set; } = 1;
+    public float Angle { get; set; } = 0f;
+    public float AngleOffset { get; set; } = 0f;
     public Dictionary<char, DataSymbol> Symbols { get; private set; } = new();
+    public string Axiom { get; set; }
 
-    public MasterModel(string axiom, Dictionary<char, DataSymbol> symbols)
+    public MasterModel(int iterations, float angle, float angleOffset, Dictionary<char, DataSymbol> symbols, string axiom)
     {
-        Axiom = axiom;
+        Iterations = Mathf.Max(iterations, 1);
+        Angle = angle;
+        AngleOffset = angleOffset;
         Symbols = symbols;
+        Axiom = axiom;
     }
 
     private void AddSymbol(char id, DataSymbol dataSymbol)
