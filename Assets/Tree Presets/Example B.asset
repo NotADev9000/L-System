@@ -25,7 +25,7 @@ MonoBehaviour:
           _isVariable: 1
           _turtleFunction: 1
           _line:
-            _length: 1
+            _length: 1.2
             _isVisible: 1
             _color: {fileID: 2100000, guid: 35fce8c65f4cfbe40a89617b93bf04ca, type: 2}
             _leafPrefab: {fileID: 0}

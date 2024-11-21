@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c760733a594e21f4097716b321381a56, type: 3}
-  m_Name: Example A
+  m_Name: Blank
   m_EditorClassIdentifier: 
-  _presetName: Tree Example A
+  _presetName: Blank
   _treeData:
-    _iterations: 5
-    _angle: 25.7
+    _iterations: 1
+    _angle: 0
     _angleOffset: 0
-    _axiom: F
+    _axiom: 
     _symbols:
       _serializedList:
       - Key: 70
@@ -25,13 +25,13 @@ MonoBehaviour:
           _isVariable: 1
           _turtleFunction: 1
           _line:
-            _length: 0.32
+            _length: 1
             _isVisible: 1
             _color: {fileID: 2100000, guid: 35fce8c65f4cfbe40a89617b93bf04ca, type: 2}
             _leafPrefab: {fileID: 0}
           _rule:
             _successors:
-            - F[+F]F[-F]F
+            - 
             - 
             _stochasticChance: 0
       - Key: 43
