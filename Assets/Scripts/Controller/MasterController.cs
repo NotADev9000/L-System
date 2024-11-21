@@ -17,15 +17,19 @@ public class MasterController : MonoBehaviour
     [SerializeField] private GameObject _masterCanvasGO;
 
     private MasterModel _model;
+    private PresetController _presetController;
     private SymbolsController _symbolsController;
     private LineController _lineController;
     private RuleController _ruleController;
     private GeneralController _generalController;
 
+    private TreePresetSO _currentPreset;
+
     private void Awake()
     {
         if (_generator == null) Debug.LogError("CONTROLLER: Generator is not set in the inspector!");
 
+        _presetController = GetComponent<PresetController>();
         _symbolsController = GetComponent<SymbolsController>();
         _lineController = GetComponent<LineController>();
         _ruleController = GetComponent<RuleController>();
@@ -34,14 +38,17 @@ public class MasterController : MonoBehaviour
 
     private void Start()
     {
-        BigOldTestData();
+        UpdateTreeData(_presetController.GetSelectedPresetIndex());
+    }
 
-        _symbolsController.SetModel(_model);
-        _lineController.SetModel(_model);
-        _ruleController.SetModel(_model);
-        _generalController.SetModel(_model);
+    private void OnEnable()
+    {
+        _presetController.OnPresetChanged += UpdateTreeData;
+    }
 
-        _generator.SetTreeData(_model);
+    private void OnDisable()
+    {
+        _presetController.OnPresetChanged -= UpdateTreeData;
     }
 
     private void Update()
@@ -55,40 +62,32 @@ public class MasterController : MonoBehaviour
         }
     }
 
-    private void BigOldTestData()
+    private void OnDestroy()
     {
-        /////////////////////////////////////
-        // TEST DATA                       //
-        /////////////////////////////////////
-
-        int iterations = 1;
-        float angle = 25.7f;
-        float angleOffset = 0.0f;
-        string axiom = "K";
-
-        SerializedDictionary<char, DataSymbol> dataSymbols = new()
+        if (_currentPreset != null)
         {
-            {'F', new(true,
-                      TurtleFunction.DrawForward,
-                      new DataLine(1.0f, true, MaterialsManager.Instance.Materials[0], null),
-                      new DataRule("FF", "F", 0.6f)
-            )},
-            {'K', new(true,
-                      TurtleFunction.DrawForward,
-                      new DataLine(0.5f, true, MaterialsManager.Instance.Materials[3], null),
-                      new DataRule("F[+K]F[-K]+K", "F[+K]K", 0.7f)
-            )},
-            {'+', new(false, TurtleFunction.TurnLeft)},
-            {'-', new(false, TurtleFunction.TurnRight)},
-            {'[', new(false, TurtleFunction.PushState)},
-            {']', new(false, TurtleFunction.PopState)}
-        };
+            Debug.Log($"Cleaning up preset on destroy: {_currentPreset.name}");
+            Destroy(_currentPreset);
+        }
+    }
 
-        _model = new MasterModel(iterations, angle, angleOffset, dataSymbols, axiom);
+    private void UpdateTreeData(int index)
+    {
+        if (_currentPreset != null)
+        {
+            Debug.Log($"Destroying previous preset: {_currentPreset.name}");
+            Destroy(_currentPreset);
+        }
 
-        /////////////////////////////////////
-        // END TEST DATA                   //
-        /////////////////////////////////////
+        _currentPreset = Instantiate(PresetManager.Instance.Presets[index]);
+        _model = _currentPreset.TreeData;
+
+        _symbolsController.SetModel(_model);
+        _lineController.SetModel(_model);
+        _ruleController.SetModel(_model);
+        _generalController.SetModel(_model);
+
+        _generator.SetTreeData(_model);
     }
 
     private void PrepareTreeGenerator()

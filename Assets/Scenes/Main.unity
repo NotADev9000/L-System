@@ -1237,6 +1237,7 @@ GameObject:
   - component: {fileID: 251218265}
   - component: {fileID: 251218264}
   - component: {fileID: 251218269}
+  - component: {fileID: 251218271}
   - component: {fileID: 251218266}
   - component: {fileID: 251218270}
   - component: {fileID: 251218267}
@@ -1359,6 +1360,19 @@ MonoBehaviour:
   _iterationsInputField: {fileID: 9038497337719044671}
   _angleInputField: {fileID: 5524220283456938562}
   _angleOffsetInputField: {fileID: 2593748608252533256}
+--- !u!114 &251218271
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 251218263}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5728f14f858c2934da4846ac38b07cfc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _presetsDropdown: {fileID: 2021428450}
 --- !u!1 &275013183
 GameObject:
   m_ObjectHideFlags: 0
@@ -2031,6 +2045,7 @@ GameObject:
   m_Component:
   - component: {fileID: 500312934}
   - component: {fileID: 500312935}
+  - component: {fileID: 500312936}
   m_Layer: 0
   m_Name: Asset Manager
   m_TagString: Untagged
@@ -2075,6 +2090,23 @@ MonoBehaviour:
   - {fileID: 2100000, guid: b6137a7d21a51d14794e5561bcc578bc, type: 2}
   - {fileID: 2100000, guid: ab937a7a210702241ae0cb288270eee9, type: 2}
   - {fileID: 2100000, guid: 0047ce755bd70c048b1976a4e3a7b56b, type: 2}
+--- !u!114 &500312936
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 500312933}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fda3b7f4ee8c49a40b840a5c8690c082, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _presets:
+  - {fileID: 11400000, guid: 13c7b62d8fcf0114187402c6378277bc, type: 2}
+  - {fileID: 11400000, guid: a3a3e353118e5474abfb39919873288a, type: 2}
+  - {fileID: 11400000, guid: 972dbea955c84034282ff5f247668b6e, type: 2}
+  - {fileID: 11400000, guid: e0171ccea6fd8f64aaef0739a0814212, type: 2}
 --- !u!1 &520796137
 GameObject:
   m_ObjectHideFlags: 0
@@ -9771,7 +9803,7 @@ GameObject:
   - component: {fileID: 2021428450}
   - component: {fileID: 2021428449}
   m_Layer: 0
-  m_Name: drp_Func
+  m_Name: drp_Preset
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9871,7 +9903,19 @@ MonoBehaviour:
     m_Options: []
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 251218271}
+        m_TargetAssemblyTypeName: PresetController, Assembly-CSharp
+        m_MethodName: UI_OnPresetChanged
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_AlphaFadeSpeed: 0.15
 --- !u!114 &2021428451
 MonoBehaviour:

@@ -25,12 +25,8 @@ public class LineController : MonoBehaviour
     public void SetModel(MasterModel model)
     {
         _model = model;
-
-        foreach (KeyValuePair<char, DataSymbol> kvp in model.Symbols)
-        {
-            if (kvp.Value.TurtleFunction == TurtleFunction.DrawForward)
-                CreateLineGroupUIElement(kvp.Key, kvp.Value.Line);
-        }
+        ClearAllUIElements();
+        CreateAllUIElements();
     }
 
     #region Model Events
@@ -93,6 +89,23 @@ public class LineController : MonoBehaviour
     #endregion
 
     #region UI Element Management
+
+    private void CreateAllUIElements()
+    {
+        foreach (KeyValuePair<char, DataSymbol> kvp in _model.Symbols)
+        {
+            if (kvp.Value.TurtleFunction == TurtleFunction.DrawForward)
+                CreateLineGroupUIElement(kvp.Key, kvp.Value.Line);
+        }
+    }
+
+    private void ClearAllUIElements()
+    {
+        foreach (Transform child in _lineGroupParent)
+        {
+            Destroy(child.gameObject);
+        }
+    }
 
     private void CreateLineGroupUIElement(char dataSymbolId, DataLine dataLine)
     {

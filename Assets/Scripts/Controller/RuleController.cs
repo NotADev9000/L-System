@@ -26,15 +26,8 @@ public class RuleController : MonoBehaviour
     public void SetModel(MasterModel model)
     {
         _model = model;
-
-        // check if any symbols are variables and create UI elements for them if they have not been created already
-        foreach (KeyValuePair<char, DataSymbol> kvp in model.Symbols)
-        {
-            if (kvp.Value.IsVariable)
-                CreateRuleGroupUIElement(kvp.Key, kvp.Value.Rule);
-        }
-
-        _axiomInputField.SetTextWithoutNotify(_model.Axiom);
+        ClearAllUIElements();
+        CreateAllUIElements();
     }
 
     #region Model Events
@@ -98,6 +91,27 @@ public class RuleController : MonoBehaviour
     #endregion
 
     #region UI Element Management
+
+    private void ClearAllUIElements()
+    {
+        foreach (Transform child in _ruleGroupParent)
+        {
+            Destroy(child.gameObject);
+        }
+
+        _axiomInputField.SetTextWithoutNotify(string.Empty);
+    }
+
+    private void CreateAllUIElements()
+    {
+        foreach (KeyValuePair<char, DataSymbol> kvp in _model.Symbols)
+        {
+            if (kvp.Value.IsVariable)
+                CreateRuleGroupUIElement(kvp.Key, kvp.Value.Rule);
+        }
+
+        _axiomInputField.SetTextWithoutNotify(_model.Axiom);
+    }
 
     private void CreateRuleGroupUIElement(char dataSymbolId, DataRule dataRule = null)
     {

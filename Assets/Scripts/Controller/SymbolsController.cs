@@ -21,11 +21,25 @@ public class SymbolsController : MonoBehaviour
     public void SetModel(MasterModel model)
     {
         _model = model;
+        ClearAllUIElements();
+        CreateAllUIElements();
+    }
 
-        foreach (KeyValuePair<char, DataSymbol> kvp in model.Symbols)
+    private void CreateAllUIElements()
+    {
+        foreach (KeyValuePair<char, DataSymbol> kvp in _model.Symbols)
         {
             CreateSymbolGroupUIElement(kvp.Key, kvp.Value);
         }
+    }
+
+    private void ClearAllUIElements()
+    {
+        foreach (RectTransform symbolGroup in _symbolGroups.Keys)
+        {
+            Destroy(symbolGroup.gameObject);
+        }
+        _symbolGroups.Clear();
     }
 
     private void CreateSymbolGroupUIElement(char dataSymbolId = Char.MinValue, DataSymbol dataSymbol = null)
@@ -52,7 +66,7 @@ public class SymbolsController : MonoBehaviour
         variableToggle.onValueChanged.AddListener((bool isVariable) => { UI_OnVariableToggleChanged(symbolGroupUIElement, isVariable); });
     }
 
-    private void DestroySymbolGroupUIElement(RectTransform symbolGroup)
+    private void RemoveSymbolGroupUIElement(RectTransform symbolGroup)
     {
         char id = _symbolGroups[symbolGroup].currentId;
         // Remove symbol from model if it exists
@@ -75,7 +89,7 @@ public class SymbolsController : MonoBehaviour
         if (_symbolGroups.Count > 0)
         {
             RectTransform lastSymbolGroup = _symbolGroups.Keys.Last();
-            DestroySymbolGroupUIElement(lastSymbolGroup);
+            RemoveSymbolGroupUIElement(lastSymbolGroup);
         }
     }
 
