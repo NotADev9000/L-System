@@ -48,9 +48,11 @@ public class GeneralController : MonoBehaviour
         {
             angleNum = Convert.ToSingle(angle);
         }
-        catch (FormatException) { }
+        catch (FormatException)
+        {
+            if (angle != string.Empty && !angle.Contains('.')) _angleInputField.text = angleNum.ToString();
+        }
 
-        if (angle != string.Empty) _angleInputField.text = angleNum.ToString();
         _model.Angle = angleNum;
     }
 
@@ -61,9 +63,11 @@ public class GeneralController : MonoBehaviour
         {
             angleOffsetNum = Convert.ToSingle(angleOffset);
         }
-        catch (FormatException) { }
+        catch (FormatException)
+        {
+            if (angleOffset != string.Empty && !angleOffset.Contains('.')) _angleOffsetInputField.text = angleOffsetNum.ToString();
+        }
 
-        if (angleOffset != string.Empty) _angleOffsetInputField.text = angleOffsetNum.ToString();
         _model.AngleOffset = angleOffsetNum;
     }
 
