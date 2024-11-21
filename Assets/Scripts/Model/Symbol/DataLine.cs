@@ -1,19 +1,21 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[Serializable]
 public class DataLine
 {
-    private float _length;
+    [SerializeField] private float _length;
     public float Length { get { return _length; } }
 
-    private bool _isVisible;
+    [SerializeField] private bool _isVisible;
     public bool IsVisible { get { return _isVisible; } }
 
-    private Material _color;
+    [SerializeField] private Material _color;
     public Material Color { get { return _color; } }
 
-    private GameObject _leafPrefab;
+    [SerializeField] private GameObject _leafPrefab;
     public GameObject LeafPrefab { get { return _leafPrefab; } }
 
     public DataLine(float length = 1, bool isVisible = true, Material color = null, GameObject leafPrefab = null)

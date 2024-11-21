@@ -1542,7 +1542,7 @@ GameObject:
   - component: {fileID: 287717406}
   - component: {fileID: 287717405}
   m_Layer: 0
-  m_Name: grp_Panel_Axiom
+  m_Name: grp_Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

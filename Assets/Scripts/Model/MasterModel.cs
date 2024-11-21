@@ -2,7 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using AYellowpaper.SerializedCollections;
 
+[Serializable]
 public class MasterModel
 {
     // Events subscribed to by UI controllers
@@ -11,13 +13,23 @@ public class MasterModel
     public static event Action<char, TurtleFunction> OnFunctionUpdated;
     public static event Action<char, bool> OnIsVariableUpdated;
 
-    public int Iterations { get; set; } = 1;
-    public float Angle { get; set; } = 0f;
-    public float AngleOffset { get; set; } = 0f;
-    public Dictionary<char, DataSymbol> Symbols { get; private set; } = new();
-    public string Axiom { get; set; }
+    [SerializeField] private int _iterations;
+    public int Iterations { get { return _iterations; } set { _iterations = value; } }
 
-    public MasterModel(int iterations, float angle, float angleOffset, Dictionary<char, DataSymbol> symbols, string axiom)
+    [SerializeField] private float _angle;
+    public float Angle { get { return _angle; } set { _angle = value; } }
+
+    [SerializeField] private float _angleOffset;
+    public float AngleOffset { get { return _angleOffset; } set { _angleOffset = value; } }
+
+    [SerializeField] private string _axiom = string.Empty;
+    public string Axiom { get { return _axiom; } set { _axiom = value; } }
+
+    [SerializedDictionary("ID", "Data")]
+    [SerializeField] private SerializedDictionary<char, DataSymbol> _symbols = new() { { Char.MinValue, new DataSymbol() }, { 'x', new DataSymbol() } };
+    public SerializedDictionary<char, DataSymbol> Symbols { get { return _symbols; } private set { _symbols = value; } }
+
+    public MasterModel(int iterations, float angle, float angleOffset, SerializedDictionary<char, DataSymbol> symbols, string axiom)
     {
         Iterations = Mathf.Max(iterations, 1);
         Angle = angle;

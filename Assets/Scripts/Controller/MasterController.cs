@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using UnityEngine;
+using AYellowpaper.SerializedCollections;
 
 public class MasterController : MonoBehaviour
 {
@@ -65,7 +66,7 @@ public class MasterController : MonoBehaviour
         float angleOffset = 0.0f;
         string axiom = "K";
 
-        Dictionary<char, DataSymbol> dataSymbols = new()
+        SerializedDictionary<char, DataSymbol> dataSymbols = new()
         {
             {'F', new(true,
                       TurtleFunction.DrawForward,

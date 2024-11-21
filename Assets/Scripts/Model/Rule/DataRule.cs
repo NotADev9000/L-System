@@ -1,12 +1,14 @@
+using System;
 using UnityEngine;
 
+[Serializable]
 public class DataRule
 {
-    private string[] _successors = new string[2];
+    [SerializeField] private string[] _successors = new string[2];
     public string Successor1 { get { return _successors[0]; } }
     public string Successor2 { get { return _successors[1]; } }
 
-    private float _stochasticChance;
+    [SerializeField] private float _stochasticChance;
     public float StochasticChance => _stochasticChance;
 
     public DataRule(string successor1 = "", string successor2 = "", float stochasticChance = 0f)
