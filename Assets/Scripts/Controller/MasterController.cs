@@ -13,9 +13,6 @@ public class MasterController : MonoBehaviour
     [SerializeField] private Vector3 _initialGeneratorPosition = new(0, 0, 0);
     [SerializeField] private Vector3 _initialGeneratorRotation = new(-90f, 0, 0);
 
-    [Header("UI References")]
-    [SerializeField] private GameObject _masterCanvasGO;
-
     private MasterModel _model;
     private PresetController _presetController;
     private SymbolsController _symbolsController;
@@ -49,17 +46,6 @@ public class MasterController : MonoBehaviour
     private void OnDisable()
     {
         _presetController.OnPresetChanged -= UpdateTreeData;
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.H))
-        {
-            if (_masterCanvasGO != null)
-                _masterCanvasGO.SetActive(!_masterCanvasGO.activeSelf);
-            else
-                Debug.Log("_MasterCanvasGO is not set in the inspector!");
-        }
     }
 
     private void OnDestroy()

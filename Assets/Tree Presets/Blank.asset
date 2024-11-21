@@ -22,7 +22,7 @@ MonoBehaviour:
       _serializedList:
       - Key: 70
         Value:
-          _isVariable: 1
+          _isVariable: 0
           _turtleFunction: 1
           _line:
             _length: 1

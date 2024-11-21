@@ -6,8 +6,11 @@ public class UIDisplayController : MonoBehaviour
 {
     [SerializeField] private Canvas[] _uiDisplays;
     [SerializeField] private int _startingDisplayIndex = 0;
+    [SerializeField] private Canvas _allUI;
+    [SerializeField] private Canvas _topUI;
 
     private int _uiDisplayIndex = 0;
+    private bool _isAllUIShown = true;
 
     private void Awake()
     {
@@ -27,6 +30,11 @@ public class UIDisplayController : MonoBehaviour
         int indexChange = Input.GetKeyDown(KeyCode.RightArrow) ? 1 : Input.GetKeyDown(KeyCode.LeftArrow) ? -1 : 0;
         if (indexChange != 0)
             ChangeDisplayIndex(indexChange);
+
+        if (Input.GetMouseButtonDown(0) && !_isAllUIShown)
+        {
+            ToggleAllUI(true);
+        }
     }
 
     private void ChangeDisplayIndex(int indexChange)
@@ -43,4 +51,24 @@ public class UIDisplayController : MonoBehaviour
             _uiDisplays[i].gameObject.SetActive(i == _uiDisplayIndex);
         }
     }
+
+    private void ToggleAllUI(bool isShown)
+    {
+        _allUI.gameObject.SetActive(isShown);
+        _isAllUIShown = isShown;
+    }
+
+    #region UI Callbacks
+
+    public void ToggleTopUI()
+    {
+        _topUI.gameObject.SetActive(!_topUI.gameObject.activeSelf);
+    }
+
+    public void HideAllUI()
+    {
+        ToggleAllUI(false);
+    }
+
+    #endregion
 }
