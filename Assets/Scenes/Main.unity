@@ -1833,8 +1833,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bd8be9964288db448a06e19e5509c03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _minIterationsAllowed: 1
-  _maxIterationsAllowed: 10
   _iterationsInputField: {fileID: 9038497337719044671}
   _angleInputField: {fileID: 5524220283456938562}
   _angleOffsetInputField: {fileID: 2593748608252533256}
