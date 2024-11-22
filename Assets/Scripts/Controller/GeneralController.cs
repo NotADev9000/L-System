@@ -6,16 +6,22 @@ using UnityEngine;
 
 public class GeneralController : MonoBehaviour
 {
-    [Header("Iteration Settings")]
-    [SerializeField] private int _minIterationsAllowed = 1;
-    [SerializeField] private int _maxIterationsAllowed = 10;
-
     [Header("UI References")]
     [SerializeField] private TMP_InputField _iterationsInputField;
     [SerializeField] private TMP_InputField _angleInputField;
     [SerializeField] private TMP_InputField _angleOffsetInputField;
 
     private MasterModel _model;
+
+    private void OnEnable()
+    {
+        SubscribeToModelEvents();
+    }
+
+    private void OnDisable()
+    {
+        UnsubscribeFromModelEvents();
+    }
 
     public void SetModel(MasterModel model)
     {
@@ -26,6 +32,25 @@ public class GeneralController : MonoBehaviour
         _angleOffsetInputField.SetTextWithoutNotify(_model.AngleOffset.ToString());
     }
 
+    #region Model Events
+
+    private void SubscribeToModelEvents()
+    {
+        MasterModel.OnIterationsUpdated += OnIterationsUpdated;
+    }
+
+    private void UnsubscribeFromModelEvents()
+    {
+        MasterModel.OnIterationsUpdated -= OnIterationsUpdated;
+    }
+
+    private void OnIterationsUpdated(int iterations)
+    {
+        _iterationsInputField.SetTextWithoutNotify(iterations.ToString());
+    }
+
+    #endregion
+
     #region UI Callbacks
 
     public void UI_OnIterationsChanged(string iterations)
@@ -33,12 +58,11 @@ public class GeneralController : MonoBehaviour
         int iterationsNum = 1;
         try
         {
-            iterationsNum = Mathf.Clamp(Convert.ToInt16(iterations), _minIterationsAllowed, _maxIterationsAllowed);
+            iterationsNum = Convert.ToInt16(iterations);
         }
         catch (FormatException) { }
 
-        if (iterations != string.Empty) _iterationsInputField.text = iterationsNum.ToString();
-        _model.Iterations = iterationsNum;
+        _model.UpdateIterations(iterationsNum, iterations != string.Empty);
     }
 
     public void UI_OnAngleChanged(string angle)

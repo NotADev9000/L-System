@@ -12,7 +12,10 @@ public class UIDisplayController : MonoBehaviour
     // [SerializeField] private Canvas _extraUI;
 
     private Canvas[] _uiDisplays;
+    private bool _isTopUIShown = true;
+    public bool IsTopUIShown { get { return _isTopUIShown; } }
     private bool _isAllUIShown = true;
+    public bool IsAllUIShown { get { return _isAllUIShown; } }
 
     private void Awake()
     {
@@ -46,7 +49,9 @@ public class UIDisplayController : MonoBehaviour
 
     public void UI_OnToggleTopUI()
     {
-        _topUI.gameObject.SetActive(!_topUI.gameObject.activeSelf);
+        bool isShown = !_topUI.gameObject.activeSelf;
+        _topUI.gameObject.SetActive(isShown);
+        _isTopUIShown = isShown;
     }
 
     public void UI_OnHideAllUI()

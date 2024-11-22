@@ -15,6 +15,8 @@ MonoBehaviour:
   _presetName: Blank
   _treeData:
     _iterations: 1
+    _minIterationsAllowed: 1
+    _maxIterationsAllowed: 10
     _angle: 0
     _angleOffset: 0
     _axiom: 

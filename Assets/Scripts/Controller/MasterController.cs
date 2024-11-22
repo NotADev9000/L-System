@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Data;
 using UnityEngine;
 using AYellowpaper.SerializedCollections;
+using UnityEngine.XR;
+using TMPro;
 
 public class MasterController : MonoBehaviour
 {
@@ -19,8 +21,11 @@ public class MasterController : MonoBehaviour
     private LineController _lineController;
     private RuleController _ruleController;
     private GeneralController _generalController;
+    private UIDisplayController _uiDisplayController;
 
     private TreePresetSO _currentPreset;
+
+    #region Unity Lifecycle
 
     private void Awake()
     {
@@ -31,6 +36,7 @@ public class MasterController : MonoBehaviour
         _lineController = GetComponent<LineController>();
         _ruleController = GetComponent<RuleController>();
         _generalController = GetComponent<GeneralController>();
+        _uiDisplayController = GetComponent<UIDisplayController>();
     }
 
     private void Start()
@@ -48,6 +54,11 @@ public class MasterController : MonoBehaviour
         _presetController.OnPresetChanged -= UpdateTreeData;
     }
 
+    private void Update()
+    {
+        HandleIterationInput();
+    }
+
     private void OnDestroy()
     {
         if (_currentPreset != null)
@@ -56,6 +67,34 @@ public class MasterController : MonoBehaviour
             Destroy(_currentPreset);
         }
     }
+
+    #endregion
+
+    #region Hotkeys
+
+    private bool AreHotkeysEnabled()
+    {
+        return !_uiDisplayController.IsTopUIShown || !_uiDisplayController.IsAllUIShown;
+    }
+
+    private void HandleIterationInput()
+    {
+        for (int i = 0; i < 10; i++)
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha0 + i))
+            {
+                if (!AreHotkeysEnabled()) return;
+
+                int newIterations = i == 0 ? 10 : i;
+                _model.UpdateIterations(newIterations);
+                GenerateNewTree();
+            }
+        }
+    }
+
+    #endregion
+
+    #region L-System Preparation
 
     private void UpdateTreeData(int index)
     {
@@ -76,6 +115,12 @@ public class MasterController : MonoBehaviour
         _generator.SetTreeData(_model);
     }
 
+    private void GenerateNewTree()
+    {
+        PrepareTreeGenerator();
+        _generator.GenerateLSystem();
+    }
+
     private void PrepareTreeGenerator()
     {
         _generator.DestroyTree();
@@ -88,12 +133,12 @@ public class MasterController : MonoBehaviour
         _generator.transform.rotation = Quaternion.Euler(_initialGeneratorRotation);
     }
 
+    #endregion
+
     #region UI Callbacks
     public void UI_OnGenerateClicked()
     {
-        PrepareTreeGenerator();
-        _generator.GenerateLSystem();
-
+        GenerateNewTree();
     }
 
     #endregion

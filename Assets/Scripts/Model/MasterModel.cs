@@ -9,12 +9,15 @@ public class MasterModel
 {
     // Events subscribed to by UI controllers
     public static event Action<char> OnSymbolRemoved;
+    public static event Action<int> OnIterationsUpdated;
     public static event Action<char, char> OnSymbolIdUpdated;
     public static event Action<char, TurtleFunction> OnFunctionUpdated;
     public static event Action<char, bool> OnIsVariableUpdated;
 
     [SerializeField] private int _iterations;
     public int Iterations { get { return _iterations; } set { _iterations = value; } }
+    [SerializeField] private int _minIterationsAllowed = 1;
+    [SerializeField] private int _maxIterationsAllowed = 10;
 
     [SerializeField] private float _angle;
     public float Angle { get { return _angle; } set { _angle = value; } }
@@ -31,7 +34,7 @@ public class MasterModel
 
     public MasterModel(int iterations, float angle, float angleOffset, SerializedDictionary<char, DataSymbol> symbols, string axiom)
     {
-        Iterations = Mathf.Max(iterations, 1);
+        Iterations = Mathf.Max(iterations, _minIterationsAllowed);
         Angle = angle;
         AngleOffset = angleOffset;
         Symbols = symbols;
@@ -53,6 +56,13 @@ public class MasterModel
             if (Symbols.Remove(id) && invokeEvent)
                 OnSymbolRemoved?.Invoke(id);
         }
+    }
+
+    public void UpdateIterations(int iterations, bool notify = true)
+    {
+        _iterations = Mathf.Clamp(iterations, _minIterationsAllowed, _maxIterationsAllowed);
+        if (notify)
+            OnIterationsUpdated?.Invoke(_iterations);
     }
 
     public void UpdateSymbolId(char oldId, char newId, DataSymbol dataSymbol)
