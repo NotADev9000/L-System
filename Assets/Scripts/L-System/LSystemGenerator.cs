@@ -15,9 +15,16 @@ public class LSystemGenerator : MonoBehaviour
     [SerializeField] private Transform _treeParent;
     [SerializeField] private LineRenderer _branchPrefab;
 
+    [SerializeField] private MeshFilter _meshFilter;
+    [SerializeField] private Camera _camera;
+
     private MasterModel _treeData;
     private Stack<TransformStore> _transformStack = new();
     private StringBuilder _stringBuilder = new();
+
+    private char _lastSymbolIdDrawn;
+    private LineRenderer _currentRunningBranch;
+    private int _currentRunningBranchIndex;
 
     private void Start()
     {
@@ -89,6 +96,8 @@ public class LSystemGenerator : MonoBehaviour
 
     private void DrawLSystem(string inputString)
     {
+        _currentRunningBranch = null;
+
         foreach (char c in inputString)
         {
             if (_treeData.Symbols.TryGetValue(c, out DataSymbol symbol))
@@ -98,7 +107,7 @@ public class LSystemGenerator : MonoBehaviour
                 switch (turtleFunction)
                 {
                     case TurtleFunction.DrawForward:
-                        DrawForward(_treeData.Symbols[c].Line);
+                        DrawForward(_treeData.Symbols[c].Line, c);
                         break;
                     case TurtleFunction.PushState:
                         _transformStack.Push(new TransformStore { _position = transform.position, _rotation = transform.rotation });
@@ -109,6 +118,7 @@ public class LSystemGenerator : MonoBehaviour
                             Debug.LogWarning("Tried to pop an empty transform stack!");
                             break;
                         }
+                        _currentRunningBranch = null;
                         TransformStore ts = _transformStack.Pop();
                         transform.position = ts._position;
                         transform.rotation = ts._rotation;
@@ -146,17 +156,23 @@ public class LSystemGenerator : MonoBehaviour
         }
     }
 
-    private void DrawForward(DataLine line)
+    private void DrawForward(DataLine line, char symbolId)
     {
-        LineRenderer branch = Instantiate(_branchPrefab, transform.position, transform.rotation, _treeParent);
+        if (_currentRunningBranch == null || _lastSymbolIdDrawn != symbolId)
+        {
+            _currentRunningBranch = Instantiate(_branchPrefab, transform.position, transform.rotation, _treeParent);
+            if (!line.IsVisible) _currentRunningBranch.gameObject.SetActive(false);
+            _currentRunningBranch.SetPosition(0, transform.position);
+            _currentRunningBranch.material = line.Color;
+            _currentRunningBranchIndex = 1;
+            _lastSymbolIdDrawn = symbolId;
+        }
+
         Vector3 drawVector = transform.forward * line.Length;
 
-        branch.SetPosition(0, transform.position);
-        branch.SetPosition(1, transform.position + drawVector);
-        branch.material = line.Color;
-
-        if (!line.IsVisible)
-            branch.gameObject.SetActive(false);
+        _currentRunningBranch.positionCount = _currentRunningBranchIndex + 1;
+        _currentRunningBranch.SetPosition(_currentRunningBranchIndex, transform.position + drawVector);
+        _currentRunningBranchIndex++;
 
         transform.position += drawVector;
     }

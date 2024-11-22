@@ -25,7 +25,7 @@ public class UIDisplayController : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0) && !_isAllUIShown)
+        if (Input.anyKeyDown && !_isAllUIShown)
         {
             ToggleAllUI(true);
         }
