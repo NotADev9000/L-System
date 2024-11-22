@@ -4,51 +4,35 @@ using UnityEngine;
 
 public class UIDisplayController : MonoBehaviour
 {
-    [SerializeField] private Canvas[] _uiDisplays;
-    [SerializeField] private int _startingDisplayIndex = 0;
     [SerializeField] private Canvas _allUI;
     [SerializeField] private Canvas _topUI;
+    [SerializeField] private Canvas _generalUI;
+    [SerializeField] private Canvas _visualsUI;
+    [SerializeField] private Canvas _rulesUI;
+    // [SerializeField] private Canvas _extraUI;
 
-    private int _uiDisplayIndex = 0;
+    private Canvas[] _uiDisplays;
     private bool _isAllUIShown = true;
 
     private void Awake()
     {
-        if (_uiDisplays.Length == 0)
-        {
-            Debug.LogError("No UI displays set in the inspector.");
-        }
-        else
-        {
-            _uiDisplayIndex = Mathf.Clamp(_startingDisplayIndex, 0, _uiDisplays.Length - 1);
-            SetActiveDisplay();
-        }
+        _uiDisplays = new Canvas[] { _generalUI, _visualsUI, _rulesUI };
+        ChangeDisplay(_generalUI);
     }
 
     private void Update()
     {
-        int indexChange = Input.GetKeyDown(KeyCode.RightArrow) ? 1 : Input.GetKeyDown(KeyCode.LeftArrow) ? -1 : 0;
-        if (indexChange != 0)
-            ChangeDisplayIndex(indexChange);
-
         if (Input.GetMouseButtonDown(0) && !_isAllUIShown)
         {
             ToggleAllUI(true);
         }
     }
 
-    private void ChangeDisplayIndex(int indexChange)
-    {
-        _uiDisplayIndex += indexChange;
-        _uiDisplayIndex = (_uiDisplayIndex + _uiDisplays.Length) % _uiDisplays.Length;
-        SetActiveDisplay();
-    }
-
-    private void SetActiveDisplay()
+    private void ChangeDisplay(Canvas display)
     {
         for (int i = 0; i < _uiDisplays.Length; i++)
         {
-            _uiDisplays[i].gameObject.SetActive(i == _uiDisplayIndex);
+            _uiDisplays[i].gameObject.SetActive(_uiDisplays[i] == display);
         }
     }
 
@@ -60,14 +44,19 @@ public class UIDisplayController : MonoBehaviour
 
     #region UI Callbacks
 
-    public void ToggleTopUI()
+    public void UI_OnToggleTopUI()
     {
         _topUI.gameObject.SetActive(!_topUI.gameObject.activeSelf);
     }
 
-    public void HideAllUI()
+    public void UI_OnHideAllUI()
     {
         ToggleAllUI(false);
+    }
+
+    public void UI_OnChangeToDisplay(Canvas ui)
+    {
+        ChangeDisplay(ui);
     }
 
     #endregion
