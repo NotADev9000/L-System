@@ -51,6 +51,8 @@ public class LSystemGenerator : MonoBehaviour
 
     public void GenerateLSystem()
     {
+        StopAllCoroutines();
+
         // Reset the transform stack
         _transformStack.Clear();
 
@@ -63,7 +65,7 @@ public class LSystemGenerator : MonoBehaviour
         }
 
         // Draw the L-System
-        DrawLSystem(currentInputString);
+        StartCoroutine(DrawLSystem(currentInputString));
     }
 
     private string ApplyTransformationRulesToString(string inputString)
@@ -84,7 +86,7 @@ public class LSystemGenerator : MonoBehaviour
         return rule.Successor2 != null && UnityEngine.Random.value < rule.StochasticChance ? rule.Successor2 : rule.Successor1;
     }
 
-    private void DrawLSystem(string inputString)
+    private IEnumerator DrawLSystem(string inputString)
     {
         _currentRunningBranch = null;
 
@@ -98,6 +100,7 @@ public class LSystemGenerator : MonoBehaviour
                 {
                     case TurtleFunction.DrawForward:
                         DrawForward(symbol.Line, c);
+                        if (DoAnimate) yield return null;
                         break;
                     case TurtleFunction.PushState:
                         _transformStack.Push(new TransformStore { _position = transform.position, _rotation = transform.rotation });
