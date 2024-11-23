@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MasterController : MonoBehaviour
 {
@@ -14,10 +15,13 @@ public class MasterController : MonoBehaviour
     [SerializeField] private float _cameraZoomLimit = 5f;
     [SerializeField] private float _cameraAutoRotateSpeed = 15f;
 
-
     [Header("Tree Location Settings")]
     [SerializeField] private Vector3 _initialGeneratorPosition = new(0, 0, 0);
     [SerializeField] private Vector3 _initialGeneratorRotation = new(-90f, 0, 0);
+
+    [Header("UI Elements")]
+    [SerializeField] private Toggle _animateToggle;
+    [SerializeField] private Toggle _autoRotateToggle;
 
     private MasterModel _model;
     private PresetController _presetController;
@@ -67,6 +71,8 @@ public class MasterController : MonoBehaviour
         HandlePresetInput();
         HandleAngleInput();
         HandleAngleOffsetInput();
+        HandleAutoRotateInput();
+        HandleAnimateInput();
     }
 
     private void OnDestroy()
@@ -94,7 +100,7 @@ public class MasterController : MonoBehaviour
         if (!AreHotkeysEnabled()) return;
 
         HandleVerticalCameraMovement();
-        HandleHorizontalCameraMovement();
+        // HandleHorizontalCameraMovement();
         HandleZoomCameraMovement();
         if (!_autoRotate) HandleRotationCameraMovement();
     }
@@ -145,6 +151,25 @@ public class MasterController : MonoBehaviour
         }
     }
 
+    private void HandleAutoRotateInput()
+    {
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            _autoRotate = !_autoRotate;
+            _autoRotateToggle.isOn = _autoRotate;
+        }
+    }
+
+    private void HandleAnimateInput()
+    {
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            _generator.DoAnimate = !_generator.DoAnimate;
+            _animateToggle.isOn = _generator.DoAnimate;
+            GenerateNewTree();
+        }
+    }
+
     #endregion
 
     #region Camera Movement
@@ -159,12 +184,12 @@ public class MasterController : MonoBehaviour
             _cameraPivot.transform.position = new Vector3(_cameraPivot.transform.position.x, _cameraGroundLimit, _cameraPivot.transform.position.z);
     }
 
-    private void HandleHorizontalCameraMovement()
-    {
-        Vector3 direction = _camera.transform.right;
-        direction *= Input.GetKey(KeyCode.LeftArrow) ? -1 : Input.GetKey(KeyCode.RightArrow) ? 1 : 0;
-        _camera.transform.position += _cameraMoveSpeed * Time.deltaTime * direction;
-    }
+    // private void HandleHorizontalCameraMovement()
+    // {
+    //     Vector3 direction = _camera.transform.right;
+    //     direction *= Input.GetKey(KeyCode.LeftArrow) ? -1 : Input.GetKey(KeyCode.RightArrow) ? 1 : 0;
+    //     _camera.transform.position += _cameraMoveSpeed * Time.deltaTime * direction;
+    // }
 
     private void HandleZoomCameraMovement()
     {

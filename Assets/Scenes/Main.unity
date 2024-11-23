@@ -1856,6 +1856,8 @@ MonoBehaviour:
   _cameraAutoRotateSpeed: 15
   _initialGeneratorPosition: {x: 0, y: 0, z: 0}
   _initialGeneratorRotation: {x: -90, y: 0, z: 0}
+  _animateToggle: {fileID: 1032865306}
+  _autoRotateToggle: {fileID: 749809834}
 --- !u!4 &251218265
 Transform:
   m_ObjectHideFlags: 0
@@ -4314,6 +4316,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ShowMaskGraphic: 0
+--- !u!114 &749809834 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5653552425590647071, guid: 932db7cfed677dc4cbc09e5c0d4d0739,
+    type: 3}
+  m_PrefabInstance: {fileID: 7084798659720505105}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9085046f02f69544eb97fd06b6048fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &750198564
 GameObject:
   m_ObjectHideFlags: 0
@@ -6311,6 +6325,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1027598261}
   m_CullTransparentMesh: 1
+--- !u!114 &1032865306 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8658613309242792514, guid: 932db7cfed677dc4cbc09e5c0d4d0739,
+    type: 3}
+  m_PrefabInstance: {fileID: 7084798659720505105}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9085046f02f69544eb97fd06b6048fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1043245503
 GameObject:
   m_ObjectHideFlags: 0
