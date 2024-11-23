@@ -10,6 +10,8 @@ public class MasterModel
     // Events subscribed to by UI controllers
     public static event Action<char> OnSymbolRemoved;
     public static event Action<int> OnIterationsUpdated;
+    public static event Action<float> OnAngleChanged;
+    public static event Action<float> OnAngleOffsetChanged;
     public static event Action<char, char> OnSymbolIdUpdated;
     public static event Action<char, TurtleFunction> OnFunctionUpdated;
     public static event Action<char, bool> OnIsVariableUpdated;
@@ -63,6 +65,18 @@ public class MasterModel
         _iterations = Mathf.Clamp(iterations, _minIterationsAllowed, _maxIterationsAllowed);
         if (notify)
             OnIterationsUpdated?.Invoke(_iterations);
+    }
+
+    public void UpdateAngleByAmount(float change)
+    {
+        _angle += change;
+        OnAngleChanged?.Invoke(_angle);
+    }
+
+    public void UpdateAngleOffsetByAmount(float change)
+    {
+        _angleOffset += change;
+        OnAngleOffsetChanged?.Invoke(_angleOffset);
     }
 
     public void UpdateSymbolId(char oldId, char newId, DataSymbol dataSymbol)

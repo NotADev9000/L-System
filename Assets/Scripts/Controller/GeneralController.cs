@@ -37,16 +37,30 @@ public class GeneralController : MonoBehaviour
     private void SubscribeToModelEvents()
     {
         MasterModel.OnIterationsUpdated += OnIterationsUpdated;
+        MasterModel.OnAngleChanged += OnAngleChanged;
+        MasterModel.OnAngleOffsetChanged += OnAngleOffsetChanged;
     }
 
     private void UnsubscribeFromModelEvents()
     {
         MasterModel.OnIterationsUpdated -= OnIterationsUpdated;
+        MasterModel.OnAngleChanged -= OnAngleChanged;
+        MasterModel.OnAngleOffsetChanged -= OnAngleOffsetChanged;
     }
 
     private void OnIterationsUpdated(int iterations)
     {
         _iterationsInputField.SetTextWithoutNotify(iterations.ToString());
+    }
+
+    private void OnAngleChanged(float angle)
+    {
+        _angleInputField.SetTextWithoutNotify(angle.ToString());
+    }
+
+    private void OnAngleOffsetChanged(float angleOffset)
+    {
+        _angleOffsetInputField.SetTextWithoutNotify(angleOffset.ToString());
     }
 
     #endregion
@@ -74,7 +88,7 @@ public class GeneralController : MonoBehaviour
         }
         catch (FormatException)
         {
-            if (angle != string.Empty && !angle.Contains('.')) _angleInputField.text = angleNum.ToString();
+            if (angle != string.Empty && !angle.Contains('.') && !angle.Contains('-')) _angleInputField.text = angleNum.ToString();
         }
 
         _model.Angle = angleNum;
@@ -89,7 +103,7 @@ public class GeneralController : MonoBehaviour
         }
         catch (FormatException)
         {
-            if (angleOffset != string.Empty && !angleOffset.Contains('.')) _angleOffsetInputField.text = angleOffsetNum.ToString();
+            if (angleOffset != string.Empty && !angleOffset.Contains('.') && !angleOffset.Contains('-')) _angleOffsetInputField.text = angleOffsetNum.ToString();
         }
 
         _model.AngleOffset = angleOffsetNum;

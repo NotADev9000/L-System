@@ -58,6 +58,8 @@ public class MasterController : MonoBehaviour
     {
         HandleIterationInput();
         HandlePresetInput();
+        HandleAngleInput();
+        HandleAngleOffsetInput();
     }
 
     private void OnDestroy()
@@ -100,6 +102,26 @@ public class MasterController : MonoBehaviour
             if (!AreHotkeysEnabled()) return;
 
             _presetController.SelectNextPreset();
+            GenerateNewTree();
+        }
+    }
+
+    private void HandleAngleInput()
+    {
+        int angleChange = Input.GetKeyDown(KeyCode.Minus) ? -1 : Input.GetKeyDown(KeyCode.Equals) ? 1 : 0;
+        if (AreHotkeysEnabled() && angleChange != 0)
+        {
+            _model.UpdateAngleByAmount(angleChange);
+            GenerateNewTree();
+        }
+    }
+
+    private void HandleAngleOffsetInput()
+    {
+        int angleChange = Input.GetKeyDown(KeyCode.LeftBracket) ? -1 : Input.GetKeyDown(KeyCode.RightBracket) ? 1 : 0;
+        if (AreHotkeysEnabled() && angleChange != 0)
+        {
+            _model.UpdateAngleOffsetByAmount(angleChange);
             GenerateNewTree();
         }
     }
