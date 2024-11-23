@@ -57,6 +57,7 @@ public class MasterController : MonoBehaviour
     private void Update()
     {
         HandleIterationInput();
+        HandlePresetInput();
     }
 
     private void OnDestroy()
@@ -89,6 +90,17 @@ public class MasterController : MonoBehaviour
                 _model.UpdateIterations(newIterations);
                 GenerateNewTree();
             }
+        }
+    }
+
+    private void HandlePresetInput()
+    {
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            if (!AreHotkeysEnabled()) return;
+
+            _presetController.SelectNextPreset();
+            GenerateNewTree();
         }
     }
 

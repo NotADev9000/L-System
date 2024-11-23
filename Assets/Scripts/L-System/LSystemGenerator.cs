@@ -145,13 +145,8 @@ public class LSystemGenerator : MonoBehaviour
                         RotateTurtle(Vector3.up, true);
                         break;
                     default:
-                        Debug.LogWarning("No Turtle Drawing behaviour for character " + c + " in L-System string.");
                         break;
                 }
-            }
-            else
-            {
-                Debug.LogWarning("No symbol found for character " + c + " in L-System string.");
             }
         }
     }

@@ -19,6 +19,15 @@ public class PresetController : MonoBehaviour
         return _presetsDropdown.value;
     }
 
+    public void SelectNextPreset()
+    {
+        int nextIndex = _presetsDropdown.value + 1;
+        if (nextIndex >= _presetsDropdown.options.Count)
+            nextIndex = 0;
+
+        _presetsDropdown.value = nextIndex;
+    }
+
     #region UI Callbacks
 
     public void UI_OnPresetChanged(int index)
