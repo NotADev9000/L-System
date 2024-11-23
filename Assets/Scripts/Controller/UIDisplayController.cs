@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class UIDisplayController : MonoBehaviour
@@ -9,7 +7,7 @@ public class UIDisplayController : MonoBehaviour
     [SerializeField] private Canvas _generalUI;
     [SerializeField] private Canvas _visualsUI;
     [SerializeField] private Canvas _rulesUI;
-    // [SerializeField] private Canvas _extraUI;
+    [SerializeField] private Canvas _extraUI;
 
     private Canvas[] _uiDisplays;
     private bool _isTopUIShown = true;
@@ -19,7 +17,7 @@ public class UIDisplayController : MonoBehaviour
 
     private void Awake()
     {
-        _uiDisplays = new Canvas[] { _generalUI, _visualsUI, _rulesUI };
+        _uiDisplays = new Canvas[] { _generalUI, _visualsUI, _rulesUI, _extraUI };
         ChangeDisplay(_generalUI);
     }
 

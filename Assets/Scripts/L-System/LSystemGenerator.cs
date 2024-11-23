@@ -107,7 +107,7 @@ public class LSystemGenerator : MonoBehaviour
                 switch (turtleFunction)
                 {
                     case TurtleFunction.DrawForward:
-                        DrawForward(_treeData.Symbols[c].Line, c);
+                        DrawForward(symbol.Line, c);
                         break;
                     case TurtleFunction.PushState:
                         _transformStack.Push(new TransformStore { _position = transform.position, _rotation = transform.rotation });

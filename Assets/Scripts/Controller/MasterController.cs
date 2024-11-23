@@ -8,10 +8,11 @@ public class MasterController : MonoBehaviour
     [Header("Camera Settings")]
     [SerializeField] private Transform _cameraPivot;
     [SerializeField] private Camera _camera;
-    [SerializeField] private float _cameraMoveSpeed = 5f;
+    [SerializeField] private float _cameraMoveSpeed = 25f;
     [SerializeField] private float _cameraGroundLimit = 0f;
     [Tooltip("The closest distance the camera can be to the camera pivot")]
     [SerializeField] private float _cameraZoomLimit = 5f;
+    [SerializeField] private float _cameraAutoRotateSpeed = 15f;
 
 
     [Header("Tree Location Settings")]
@@ -27,6 +28,8 @@ public class MasterController : MonoBehaviour
     private UIDisplayController _uiDisplayController;
 
     private TreePresetSO _currentPreset;
+
+    private bool _autoRotate = false;
 
     #region Unity Lifecycle
 
@@ -86,56 +89,14 @@ public class MasterController : MonoBehaviour
 
     private void HandleCameraMovement()
     {
+        if (_autoRotate) HandleAutoRotationCameraMovement();
+
         if (!AreHotkeysEnabled()) return;
 
         HandleVerticalCameraMovement();
         HandleHorizontalCameraMovement();
         HandleZoomCameraMovement();
-        HandleRotationCameraMovement();
-    }
-
-    private void HandleVerticalCameraMovement()
-    {
-        Vector3 direction = _cameraPivot.transform.up;
-        direction *= Input.GetKey(KeyCode.DownArrow) ? -1 : Input.GetKey(KeyCode.UpArrow) ? 1 : 0;
-        _cameraPivot.transform.position += _cameraMoveSpeed * Time.deltaTime * direction;
-
-        if (_cameraPivot.transform.position.y < _cameraGroundLimit)
-            _cameraPivot.transform.position = new Vector3(_cameraPivot.transform.position.x, _cameraGroundLimit, _cameraPivot.transform.position.z);
-    }
-
-    private void HandleHorizontalCameraMovement()
-    {
-        Vector3 direction = _camera.transform.right;
-        direction *= Input.GetKey(KeyCode.LeftArrow) ? -1 : Input.GetKey(KeyCode.RightArrow) ? 1 : 0;
-        _camera.transform.position += _cameraMoveSpeed * Time.deltaTime * direction;
-    }
-
-    private void HandleZoomCameraMovement()
-    {
-        Vector3 direction = _camera.transform.forward;
-        direction *= Input.GetKey(KeyCode.S) ? -1 : Input.GetKey(KeyCode.W) && !IsAtZoomLimit() ? 1 : 0;
-        _camera.transform.position += _cameraMoveSpeed * Time.deltaTime * direction;
-    }
-
-    private bool IsAtZoomLimit()
-    {
-        Vector3 cameraPos = _camera.transform.position;
-        Vector3 pivotPos = _cameraPivot.transform.position;
-
-        // Only check for distance on the x and z axis
-        cameraPos.y = 0;
-        pivotPos.y = 0;
-
-        float horizontalDistance = Vector3.Distance(cameraPos, pivotPos);
-        return horizontalDistance < _cameraZoomLimit;
-    }
-
-    private void HandleRotationCameraMovement()
-    {
-        Vector3 rotation = _cameraPivot.transform.rotation.eulerAngles;
-        rotation.y += Input.GetKey(KeyCode.D) ? -1 : Input.GetKey(KeyCode.A) ? 1 : 0;
-        _cameraPivot.transform.rotation = Quaternion.Euler(rotation);
+        if (!_autoRotate) HandleRotationCameraMovement();
     }
 
     private void HandleIterationInput()
@@ -186,6 +147,64 @@ public class MasterController : MonoBehaviour
 
     #endregion
 
+    #region Camera Movement
+
+    private void HandleVerticalCameraMovement()
+    {
+        Vector3 direction = _cameraPivot.transform.up;
+        direction *= Input.GetKey(KeyCode.DownArrow) ? -1 : Input.GetKey(KeyCode.UpArrow) ? 1 : 0;
+        _cameraPivot.transform.position += _cameraMoveSpeed * Time.deltaTime * direction;
+
+        if (_cameraPivot.transform.position.y < _cameraGroundLimit)
+            _cameraPivot.transform.position = new Vector3(_cameraPivot.transform.position.x, _cameraGroundLimit, _cameraPivot.transform.position.z);
+    }
+
+    private void HandleHorizontalCameraMovement()
+    {
+        Vector3 direction = _camera.transform.right;
+        direction *= Input.GetKey(KeyCode.LeftArrow) ? -1 : Input.GetKey(KeyCode.RightArrow) ? 1 : 0;
+        _camera.transform.position += _cameraMoveSpeed * Time.deltaTime * direction;
+    }
+
+    private void HandleZoomCameraMovement()
+    {
+        Vector3 direction = _camera.transform.forward;
+        direction *= Input.GetKey(KeyCode.S) ? -1 : Input.GetKey(KeyCode.W) && !IsAtZoomLimit() ? 1 : 0;
+        _camera.transform.position += _cameraMoveSpeed * Time.deltaTime * direction;
+    }
+
+    private bool IsAtZoomLimit()
+    {
+        Vector3 cameraPos = _camera.transform.position;
+        Vector3 pivotPos = _cameraPivot.transform.position;
+
+        // Only check for distance on the x and z axis
+        cameraPos.y = 0;
+        pivotPos.y = 0;
+
+        float horizontalDistance = Vector3.Distance(cameraPos, pivotPos);
+        return horizontalDistance < _cameraZoomLimit;
+    }
+
+    private void HandleRotationCameraMovement()
+    {
+        RotateCameraOnY(Input.GetKey(KeyCode.D) ? -1 : Input.GetKey(KeyCode.A) ? 1 : 0);
+    }
+
+    private void HandleAutoRotationCameraMovement()
+    {
+        RotateCameraOnY(Time.deltaTime * -_cameraAutoRotateSpeed);
+    }
+
+    private void RotateCameraOnY(float angleChange)
+    {
+        Vector3 rotation = _cameraPivot.transform.rotation.eulerAngles;
+        rotation.y += angleChange;
+        _cameraPivot.transform.rotation = Quaternion.Euler(rotation);
+    }
+
+    #endregion
+
     #region L-System Preparation
 
     private void UpdateTreeData(int index)
@@ -231,6 +250,11 @@ public class MasterController : MonoBehaviour
     public void UI_OnGenerateClicked()
     {
         GenerateNewTree();
+    }
+
+    public void UI_OnRotateToggleChanged(bool isOn)
+    {
+        _autoRotate = isOn;
     }
 
     #endregion
