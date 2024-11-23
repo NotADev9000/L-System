@@ -15,28 +15,25 @@ public class LSystemGenerator : MonoBehaviour
     [SerializeField] private Transform _treeParent;
     [SerializeField] private LineRenderer _branchPrefab;
 
-    [SerializeField] private MeshFilter _meshFilter;
-    [SerializeField] private Camera _camera;
-
     private MasterModel _treeData;
+
+    // L-System variables
     private Stack<TransformStore> _transformStack = new();
     private StringBuilder _stringBuilder = new();
 
+    // Drawing variables
     private char _lastSymbolIdDrawn;
     private LineRenderer _currentRunningBranch;
     private int _currentRunningBranchIndex;
 
-    private void Start()
+    public bool DoAnimate { get; set; }
+
+    private void Awake()
     {
         if (_branchPrefab == null)
-        {
             Debug.LogError("Branch prefab is not set in the inspector.");
-        }
-
         if (_treeParent == null)
-        {
             Debug.LogError("Tree parent is not set in the inspector.");
-        }
     }
 
     public void SetTreeData(MasterModel treeData)
@@ -54,13 +51,6 @@ public class LSystemGenerator : MonoBehaviour
 
     public void GenerateLSystem()
     {
-        // TODO: Move tree data valdiation elsewhere
-        if (_treeData == null)
-        {
-            Debug.LogError("FAILED TO GENERATE: No tree data supplied.");
-            return;
-        }
-
         // Reset the transform stack
         _transformStack.Clear();
 

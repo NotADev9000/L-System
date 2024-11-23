@@ -257,5 +257,10 @@ public class MasterController : MonoBehaviour
         _autoRotate = isOn;
     }
 
+    public void UI_OnAnimateToggleChanged(bool isOn)
+    {
+        _generator.DoAnimate = isOn;
+    }
+
     #endregion
 }

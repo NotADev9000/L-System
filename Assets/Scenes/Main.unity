@@ -1853,6 +1853,7 @@ MonoBehaviour:
   _cameraMoveSpeed: 25
   _cameraGroundLimit: 11
   _cameraZoomLimit: 5
+  _cameraAutoRotateSpeed: 15
   _initialGeneratorPosition: {x: 0, y: 0, z: 0}
   _initialGeneratorRotation: {x: -90, y: 0, z: 0}
 --- !u!4 &251218265
@@ -4447,8 +4448,6 @@ MonoBehaviour:
   _treeParent: {fileID: 2130758148}
   _branchPrefab: {fileID: 2299341564823286371, guid: 924587522ef463041bb80d98dff580aa,
     type: 3}
-  _meshFilter: {fileID: 1236936777}
-  _camera: {fileID: 330585545}
 --- !u!4 &776546276
 Transform:
   m_ObjectHideFlags: 0
@@ -13527,6 +13526,41 @@ PrefabInstance:
       value: MasterController, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 5653552425590647071, guid: 932db7cfed677dc4cbc09e5c0d4d0739,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 8658613309242792514, guid: 932db7cfed677dc4cbc09e5c0d4d0739,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8658613309242792514, guid: 932db7cfed677dc4cbc09e5c0d4d0739,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8658613309242792514, guid: 932db7cfed677dc4cbc09e5c0d4d0739,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 251218264}
+    - target: {fileID: 8658613309242792514, guid: 932db7cfed677dc4cbc09e5c0d4d0739,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8658613309242792514, guid: 932db7cfed677dc4cbc09e5c0d4d0739,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: UI_OnAnimateToggleChanged
+      objectReference: {fileID: 0}
+    - target: {fileID: 8658613309242792514, guid: 932db7cfed677dc4cbc09e5c0d4d0739,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: MasterController, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8658613309242792514, guid: 932db7cfed677dc4cbc09e5c0d4d0739,
         type: 3}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
