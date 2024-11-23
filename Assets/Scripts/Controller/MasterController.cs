@@ -1,15 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
 using UnityEngine;
-using AYellowpaper.SerializedCollections;
-using UnityEngine.XR;
-using TMPro;
 
 public class MasterController : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private LSystemGenerator _generator;
+
+    [Header("Camera Settings")]
+    [SerializeField] private Transform _cameraPivot;
+    [SerializeField] private Camera _camera;
+    [SerializeField] private float _cameraMoveSpeed = 5f;
+    [SerializeField] private float _cameraGroundLimit = 0f;
+    [Tooltip("The closest distance the camera can be to the camera pivot")]
+    [SerializeField] private float _cameraZoomLimit = 5f;
+
 
     [Header("Tree Location Settings")]
     [SerializeField] private Vector3 _initialGeneratorPosition = new(0, 0, 0);
@@ -56,6 +59,7 @@ public class MasterController : MonoBehaviour
 
     private void Update()
     {
+        HandleCameraMovement();
         HandleIterationInput();
         HandlePresetInput();
         HandleAngleInput();
@@ -78,6 +82,60 @@ public class MasterController : MonoBehaviour
     private bool AreHotkeysEnabled()
     {
         return !_uiDisplayController.IsTopUIShown || !_uiDisplayController.IsAllUIShown;
+    }
+
+    private void HandleCameraMovement()
+    {
+        if (!AreHotkeysEnabled()) return;
+
+        HandleVerticalCameraMovement();
+        HandleHorizontalCameraMovement();
+        HandleZoomCameraMovement();
+        HandleRotationCameraMovement();
+    }
+
+    private void HandleVerticalCameraMovement()
+    {
+        Vector3 direction = _cameraPivot.transform.up;
+        direction *= Input.GetKey(KeyCode.DownArrow) ? -1 : Input.GetKey(KeyCode.UpArrow) ? 1 : 0;
+        _cameraPivot.transform.position += _cameraMoveSpeed * Time.deltaTime * direction;
+
+        if (_cameraPivot.transform.position.y < _cameraGroundLimit)
+            _cameraPivot.transform.position = new Vector3(_cameraPivot.transform.position.x, _cameraGroundLimit, _cameraPivot.transform.position.z);
+    }
+
+    private void HandleHorizontalCameraMovement()
+    {
+        Vector3 direction = _camera.transform.right;
+        direction *= Input.GetKey(KeyCode.LeftArrow) ? -1 : Input.GetKey(KeyCode.RightArrow) ? 1 : 0;
+        _camera.transform.position += _cameraMoveSpeed * Time.deltaTime * direction;
+    }
+
+    private void HandleZoomCameraMovement()
+    {
+        Vector3 direction = _camera.transform.forward;
+        direction *= Input.GetKey(KeyCode.S) ? -1 : Input.GetKey(KeyCode.W) && !IsAtZoomLimit() ? 1 : 0;
+        _camera.transform.position += _cameraMoveSpeed * Time.deltaTime * direction;
+    }
+
+    private bool IsAtZoomLimit()
+    {
+        Vector3 cameraPos = _camera.transform.position;
+        Vector3 pivotPos = _cameraPivot.transform.position;
+
+        // Only check for distance on the x and z axis
+        cameraPos.y = 0;
+        pivotPos.y = 0;
+
+        float horizontalDistance = Vector3.Distance(cameraPos, pivotPos);
+        return horizontalDistance < _cameraZoomLimit;
+    }
+
+    private void HandleRotationCameraMovement()
+    {
+        Vector3 rotation = _cameraPivot.transform.rotation.eulerAngles;
+        rotation.y += Input.GetKey(KeyCode.D) ? -1 : Input.GetKey(KeyCode.A) ? 1 : 0;
+        _cameraPivot.transform.rotation = Quaternion.Euler(rotation);
     }
 
     private void HandleIterationInput()
