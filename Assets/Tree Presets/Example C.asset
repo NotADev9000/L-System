@@ -16,7 +16,7 @@ MonoBehaviour:
   _treeData:
     _iterations: 4
     _minIterationsAllowed: 1
-    _maxIterationsAllowed: 10
+    _maxIterationsAllowed: 8
     _angle: 22.5
     _angleOffset: 0
     _axiom: F
