@@ -23,6 +23,9 @@ public class MasterController : MonoBehaviour
     [SerializeField] private Toggle _animateToggle;
     [SerializeField] private Toggle _autoRotateToggle;
 
+    [Header("Visuals")]
+    [SerializeField] private GameObject _groundPlane;
+
     private MasterModel _model;
     private PresetController _presetController;
     private SymbolsController _symbolsController;
@@ -32,6 +35,10 @@ public class MasterController : MonoBehaviour
     private UIDisplayController _uiDisplayController;
 
     private TreePresetSO _currentPreset;
+
+    private Vector3 _cameraInitialPosition;
+    private Vector3 _cameraPivotInitialPosition;
+    private Quaternion _cameraPivotInitialRotation;
 
     private bool _autoRotate = false;
 
@@ -52,6 +59,10 @@ public class MasterController : MonoBehaviour
     private void Start()
     {
         UpdateTreeData(_presetController.GetSelectedPresetIndex());
+
+        _cameraPivotInitialPosition = _cameraPivot.transform.position;
+        _cameraPivotInitialRotation = _cameraPivot.transform.rotation;
+        _cameraInitialPosition = _camera.transform.position;
     }
 
     private void OnEnable()
@@ -100,7 +111,7 @@ public class MasterController : MonoBehaviour
         if (!AreHotkeysEnabled()) return;
 
         HandleVerticalCameraMovement();
-        // HandleHorizontalCameraMovement();
+        HandleHorizontalCameraMovement();
         HandleZoomCameraMovement();
         if (!_autoRotate) HandleRotationCameraMovement();
     }
@@ -180,16 +191,16 @@ public class MasterController : MonoBehaviour
         direction *= Input.GetKey(KeyCode.DownArrow) ? -1 : Input.GetKey(KeyCode.UpArrow) ? 1 : 0;
         _cameraPivot.transform.position += _cameraMoveSpeed * Time.deltaTime * direction;
 
-        if (_cameraPivot.transform.position.y < _cameraGroundLimit)
+        if (_groundPlane.activeSelf && _cameraPivot.transform.position.y < _cameraGroundLimit)
             _cameraPivot.transform.position = new Vector3(_cameraPivot.transform.position.x, _cameraGroundLimit, _cameraPivot.transform.position.z);
     }
 
-    // private void HandleHorizontalCameraMovement()
-    // {
-    //     Vector3 direction = _camera.transform.right;
-    //     direction *= Input.GetKey(KeyCode.LeftArrow) ? -1 : Input.GetKey(KeyCode.RightArrow) ? 1 : 0;
-    //     _camera.transform.position += _cameraMoveSpeed * Time.deltaTime * direction;
-    // }
+    private void HandleHorizontalCameraMovement()
+    {
+        Vector3 direction = Vector3.right;
+        direction *= Input.GetKey(KeyCode.LeftArrow) ? -1 : Input.GetKey(KeyCode.RightArrow) ? 1 : 0;
+        _cameraPivot.transform.position += _cameraMoveSpeed * Time.deltaTime * direction;
+    }
 
     private void HandleZoomCameraMovement()
     {
@@ -285,6 +296,18 @@ public class MasterController : MonoBehaviour
     public void UI_OnAnimateToggleChanged(bool isOn)
     {
         _generator.DoAnimate = isOn;
+    }
+
+    public void UI_OnToggleGroundPlane()
+    {
+        _groundPlane.SetActive(!_groundPlane.activeSelf);
+    }
+
+    public void UI_OnResetCameraPosition()
+    {
+        _cameraPivot.transform.position = _cameraPivotInitialPosition;
+        _cameraPivot.transform.rotation = _cameraPivotInitialRotation;
+        _camera.transform.position = _cameraInitialPosition;
     }
 
     #endregion
