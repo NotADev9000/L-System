@@ -8,6 +8,7 @@ public class UIDisplayController : MonoBehaviour
     [SerializeField] private Canvas _visualsUI;
     [SerializeField] private Canvas _rulesUI;
     [SerializeField] private Canvas _extraUI;
+    [SerializeField] private Canvas _hotkeysUI;
 
     private Canvas[] _uiDisplays;
     private bool _isTopUIShown = true;
@@ -60,6 +61,11 @@ public class UIDisplayController : MonoBehaviour
     public void UI_OnChangeToDisplay(Canvas ui)
     {
         ChangeDisplay(ui);
+    }
+
+    public void UI_OnToggleHotkeys()
+    {
+        _hotkeysUI.gameObject.SetActive(!_hotkeysUI.gameObject.activeSelf);
     }
 
     #endregion

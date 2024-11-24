@@ -84,6 +84,7 @@ public class MasterController : MonoBehaviour
         HandleAngleOffsetInput();
         HandleAutoRotateInput();
         HandleAnimateInput();
+        HandleGenerateInput();
     }
 
     private void OnDestroy()
@@ -179,6 +180,12 @@ public class MasterController : MonoBehaviour
             _animateToggle.isOn = _generator.DoAnimate;
             GenerateNewTree();
         }
+    }
+
+    private void HandleGenerateInput()
+    {
+        if (Input.GetKeyDown(KeyCode.G) && AreHotkeysEnabled())
+            GenerateNewTree();
     }
 
     #endregion
