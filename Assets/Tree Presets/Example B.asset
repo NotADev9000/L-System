@@ -29,7 +29,7 @@ MonoBehaviour:
           _line:
             _length: 1.2
             _isVisible: 1
-            _color: {fileID: 2100000, guid: 35fce8c65f4cfbe40a89617b93bf04ca, type: 2}
+            _color: {fileID: 2100000, guid: 4753853365b1c42449762a463ada3cea, type: 2}
             _leafPrefab: {fileID: 0}
           _rule:
             _successors:

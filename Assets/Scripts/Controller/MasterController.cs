@@ -165,7 +165,7 @@ public class MasterController : MonoBehaviour
 
     private void HandleAutoRotateInput()
     {
-        if (Input.GetKeyDown(KeyCode.R))
+        if (Input.GetKeyDown(KeyCode.R) && AreHotkeysEnabled())
         {
             _autoRotate = !_autoRotate;
             _autoRotateToggle.isOn = _autoRotate;
@@ -174,7 +174,7 @@ public class MasterController : MonoBehaviour
 
     private void HandleAnimateInput()
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.E) && AreHotkeysEnabled())
         {
             _generator.DoAnimate = !_generator.DoAnimate;
             _animateToggle.isOn = _generator.DoAnimate;

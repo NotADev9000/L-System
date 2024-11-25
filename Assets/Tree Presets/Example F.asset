@@ -29,7 +29,7 @@ MonoBehaviour:
           _line:
             _length: 1
             _isVisible: 1
-            _color: {fileID: 2100000, guid: 35fce8c65f4cfbe40a89617b93bf04ca, type: 2}
+            _color: {fileID: 2100000, guid: 8cc15ca5fee42b347941670262077c8e, type: 2}
             _leafPrefab: {fileID: 0}
           _rule:
             _successors:
@@ -43,7 +43,7 @@ MonoBehaviour:
           _line:
             _length: 0.5
             _isVisible: 1
-            _color: {fileID: 2100000, guid: 35fce8c65f4cfbe40a89617b93bf04ca, type: 2}
+            _color: {fileID: 2100000, guid: 0047ce755bd70c048b1976a4e3a7b56b, type: 2}
             _leafPrefab: {fileID: 0}
           _rule:
             _successors:

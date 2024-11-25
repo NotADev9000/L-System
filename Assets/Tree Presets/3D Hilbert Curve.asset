@@ -10,44 +10,44 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c760733a594e21f4097716b321381a56, type: 3}
-  m_Name: Example D
+  m_Name: 3D Hilbert Curve
   m_EditorClassIdentifier: 
-  _presetName: Tree Example D
+  _presetName: 3D Hilbert Curve
   _treeData:
-    _iterations: 7
+    _iterations: 3
     _minIterationsAllowed: 1
-    _maxIterationsAllowed: 8
-    _angle: 20
+    _maxIterationsAllowed: 6
+    _angle: 90
     _angleOffset: 0
     _axiom: X
     _symbols:
       _serializedList:
       - Key: 70
         Value:
-          _isVariable: 1
+          _isVariable: 0
           _turtleFunction: 1
           _line:
-            _length: 0.3
+            _length: 6
             _isVisible: 1
-            _color: {fileID: 2100000, guid: 8cc15ca5fee42b347941670262077c8e, type: 2}
+            _color: {fileID: 2100000, guid: 0047ce755bd70c048b1976a4e3a7b56b, type: 2}
             _leafPrefab: {fileID: 0}
           _rule:
             _successors:
-            - FF
+            - 
             - 
             _stochasticChance: 0
       - Key: 88
         Value:
           _isVariable: 1
-          _turtleFunction: 1
+          _turtleFunction: 0
           _line:
-            _length: 0.5
+            _length: 1
             _isVisible: 1
-            _color: {fileID: 2100000, guid: 03b9a58aba1a61c48b3a0b0fe249d17b, type: 2}
+            _color: {fileID: 2100000, guid: 35fce8c65f4cfbe40a89617b93bf04ca, type: 2}
             _leafPrefab: {fileID: 0}
           _rule:
             _successors:
-            - F[+X]F[-X]+X
+            - ^<XF^<XFX-F^>>XFX&F+>>XFX-F>X->
             - 
             _stochasticChance: 0
       - Key: 43
@@ -104,5 +104,61 @@ MonoBehaviour:
           _rule:
             _successors:
             - 
+            - 
+            _stochasticChance: 0
+      - Key: 38
+        Value:
+          _isVariable: 0
+          _turtleFunction: 4
+          _line:
+            _length: 2
+            _isVisible: 1
+            _color: {fileID: 2100000, guid: 4753853365b1c42449762a463ada3cea, type: 2}
+            _leafPrefab: {fileID: 0}
+          _rule:
+            _successors:
+            - F[+X][&X][-X][^X]FX
+            - 
+            _stochasticChance: 0
+      - Key: 94
+        Value:
+          _isVariable: 0
+          _turtleFunction: 5
+          _line:
+            _length: 2
+            _isVisible: 1
+            _color: {fileID: 2100000, guid: 4753853365b1c42449762a463ada3cea, type: 2}
+            _leafPrefab: {fileID: 0}
+          _rule:
+            _successors:
+            - F[+X][&X][-X][^X]FX
+            - 
+            _stochasticChance: 0
+      - Key: 62
+        Value:
+          _isVariable: 0
+          _turtleFunction: 7
+          _line:
+            _length: 1
+            _isVisible: 1
+            _color: {fileID: 2100000, guid: 35fce8c65f4cfbe40a89617b93bf04ca, type: 2}
+            _leafPrefab: {fileID: 0}
+          _rule:
+            _successors:
+            - ^<XF^<XFX-F^>>XFX&F+>>XFX-F>X->
+            - 
+            _stochasticChance: 0
+      - Key: 60
+        Value:
+          _isVariable: 0
+          _turtleFunction: 6
+          _line:
+            _length: 1
+            _isVisible: 1
+            _color: {fileID: 2100000, guid: 35fce8c65f4cfbe40a89617b93bf04ca, type: 2}
+            _leafPrefab: {fileID: 0}
+          _rule:
+            _successors:
+            - ^<XF^<XFX-F^>>XFX&F+>>XFX-F>X->
             - 
             _stochasticChance: 0
