@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
@@ -15,15 +13,11 @@ public class DataLine
     [SerializeField] private Material _color;
     public Material Color { get { return _color; } }
 
-    [SerializeField] private GameObject _leafPrefab;
-    public GameObject LeafPrefab { get { return _leafPrefab; } }
-
-    public DataLine(float length = 1, bool isVisible = true, Material color = null, GameObject leafPrefab = null)
+    public DataLine(float length = 1, bool isVisible = true, Material color = null)
     {
         _length = length;
         _isVisible = isVisible;
         _color = color ?? MaterialsManager.Instance.Materials[0];
-        _leafPrefab = leafPrefab;
     }
 
     public void UpdateLength(float newLength)
