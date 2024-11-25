@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c760733a594e21f4097716b321381a56, type: 3}
   m_Name: 3D Stochastic
   m_EditorClassIdentifier: 
-  _presetName: Tree Example D
+  _presetName: 3D Stochastic
   _treeData:
     _iterations: 7
     _minIterationsAllowed: 1
-    _maxIterationsAllowed: 8
+    _maxIterationsAllowed: 7
     _angle: 20
-    _angleOffset: 0
+    _angleOffset: 5
     _axiom: X
     _symbols:
       _serializedList:
@@ -41,15 +41,29 @@ MonoBehaviour:
           _isVariable: 1
           _turtleFunction: 1
           _line:
-            _length: 0.5
+            _length: 3
             _isVisible: 1
-            _color: {fileID: 2100000, guid: 03b9a58aba1a61c48b3a0b0fe249d17b, type: 2}
+            _color: {fileID: 2100000, guid: 5a08431a44247e543b8eefd52b7afd6b, type: 2}
             _leafPrefab: {fileID: 0}
           _rule:
             _successors:
-            - F[+X]F[-X]+X
-            - 
-            _stochasticChance: 0
+            - F[1X]F[2X]1X
+            - F[1D]F[2D]1D
+            _stochasticChance: 0.5
+      - Key: 68
+        Value:
+          _isVariable: 1
+          _turtleFunction: 1
+          _line:
+            _length: 3
+            _isVisible: 1
+            _color: {fileID: 2100000, guid: ab937a7a210702241ae0cb288270eee9, type: 2}
+            _leafPrefab: {fileID: 0}
+          _rule:
+            _successors:
+            - F[1X]F[2X]1X
+            - F[1D]F[2D]1D
+            _stochasticChance: 0.5
       - Key: 43
         Value:
           _isVariable: 0
@@ -106,3 +120,59 @@ MonoBehaviour:
             - 
             - 
             _stochasticChance: 0
+      - Key: 38
+        Value:
+          _isVariable: 0
+          _turtleFunction: 4
+          _line:
+            _length: 3
+            _isVisible: 1
+            _color: {fileID: 2100000, guid: ab937a7a210702241ae0cb288270eee9, type: 2}
+            _leafPrefab: {fileID: 0}
+          _rule:
+            _successors:
+            - 
+            - 
+            _stochasticChance: 0
+      - Key: 94
+        Value:
+          _isVariable: 0
+          _turtleFunction: 5
+          _line:
+            _length: 3
+            _isVisible: 1
+            _color: {fileID: 2100000, guid: ab937a7a210702241ae0cb288270eee9, type: 2}
+            _leafPrefab: {fileID: 0}
+          _rule:
+            _successors:
+            - 
+            - 
+            _stochasticChance: 0
+      - Key: 49
+        Value:
+          _isVariable: 1
+          _turtleFunction: 0
+          _line:
+            _length: 3
+            _isVisible: 1
+            _color: {fileID: 2100000, guid: ab937a7a210702241ae0cb288270eee9, type: 2}
+            _leafPrefab: {fileID: 0}
+          _rule:
+            _successors:
+            - +
+            - '&'
+            _stochasticChance: 0.5
+      - Key: 50
+        Value:
+          _isVariable: 1
+          _turtleFunction: 0
+          _line:
+            _length: 3
+            _isVisible: 1
+            _color: {fileID: 2100000, guid: ab937a7a210702241ae0cb288270eee9, type: 2}
+            _leafPrefab: {fileID: 0}
+          _rule:
+            _successors:
+            - '-'
+            - ^
+            _stochasticChance: 0.5
