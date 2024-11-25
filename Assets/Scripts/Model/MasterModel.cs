@@ -31,7 +31,7 @@ public class MasterModel
     public string Axiom { get { return _axiom; } set { _axiom = value; } }
 
     [SerializedDictionary("ID", "Data")]
-    [SerializeField] private SerializedDictionary<char, DataSymbol> _symbols = new() { { Char.MinValue, new DataSymbol() }, { 'x', new DataSymbol() } };
+    [SerializeField] private SerializedDictionary<char, DataSymbol> _symbols = new();
     public SerializedDictionary<char, DataSymbol> Symbols { get { return _symbols; } private set { _symbols = value; } }
 
     public MasterModel(int iterations, float angle, float angleOffset, SerializedDictionary<char, DataSymbol> symbols, string axiom)
