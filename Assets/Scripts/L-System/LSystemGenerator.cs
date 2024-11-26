@@ -36,6 +36,8 @@ public class LSystemGenerator : MonoBehaviour
             Debug.LogError("Tree parent is not set in the inspector.");
     }
 
+    #region Tree Prep
+
     public void SetTreeData(MasterModel treeData)
     {
         _treeData = treeData;
@@ -48,6 +50,10 @@ public class LSystemGenerator : MonoBehaviour
             Destroy(child.gameObject);
         }
     }
+
+    #endregion
+
+    #region Generation
 
     public void GenerateLSystem()
     {
@@ -68,6 +74,10 @@ public class LSystemGenerator : MonoBehaviour
         StartCoroutine(DrawLSystem(currentInputString));
     }
 
+    #endregion
+
+    #region Applying Rules
+
     private string ApplyTransformationRulesToString(string inputString)
     {
         _stringBuilder.Clear();
@@ -75,7 +85,7 @@ public class LSystemGenerator : MonoBehaviour
 
         foreach (char c in inputString)
         {
-            _stringBuilder.Append(symbols.ContainsKey(c) && symbols[c].IsVariable ? CalculateSuccessorString(symbols[c].Rule) : c.ToString());
+            _stringBuilder.Append(symbols.ContainsKey(c) && symbols[c].IsVariable ? CalculateSuccessorString(symbols[c].Rule) : c);
         }
         return _stringBuilder.ToString();
     }
@@ -85,6 +95,10 @@ public class LSystemGenerator : MonoBehaviour
         if (rule.StochasticChance == 0) return rule.Successor1;
         return rule.Successor2 != null && UnityEngine.Random.value < rule.StochasticChance ? rule.Successor2 : rule.Successor1;
     }
+
+    #endregion
+
+    #region Turtle Drawing
 
     private IEnumerator DrawLSystem(string inputString)
     {
@@ -177,4 +191,6 @@ public class LSystemGenerator : MonoBehaviour
         float randomOffset = UnityEngine.Random.Range(-_treeData.AngleOffset, _treeData.AngleOffset);
         return angle + randomOffset;
     }
+
+    #endregion
 }
