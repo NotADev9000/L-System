@@ -16,7 +16,7 @@ MonoBehaviour:
   _treeData:
     _iterations: 4
     _minIterationsAllowed: 1
-    _maxIterationsAllowed: 8
+    _maxIterationsAllowed: 7
     _angle: 22.5
     _angleOffset: 0
     _axiom: F
@@ -30,7 +30,6 @@ MonoBehaviour:
             _length: 1.4
             _isVisible: 1
             _color: {fileID: 2100000, guid: 8cc15ca5fee42b347941670262077c8e, type: 2}
-            _leafPrefab: {fileID: 0}
           _rule:
             _successors:
             - FF-[-F+F+F]+[+F-F-F]
@@ -44,7 +43,6 @@ MonoBehaviour:
             _length: 1
             _isVisible: 1
             _color: {fileID: 2100000, guid: 35fce8c65f4cfbe40a89617b93bf04ca, type: 2}
-            _leafPrefab: {fileID: 0}
           _rule:
             _successors:
             - 
@@ -58,7 +56,6 @@ MonoBehaviour:
             _length: 1
             _isVisible: 1
             _color: {fileID: 2100000, guid: 35fce8c65f4cfbe40a89617b93bf04ca, type: 2}
-            _leafPrefab: {fileID: 0}
           _rule:
             _successors:
             - 
@@ -72,7 +69,6 @@ MonoBehaviour:
             _length: 1
             _isVisible: 1
             _color: {fileID: 2100000, guid: 35fce8c65f4cfbe40a89617b93bf04ca, type: 2}
-            _leafPrefab: {fileID: 0}
           _rule:
             _successors:
             - 
@@ -86,7 +82,6 @@ MonoBehaviour:
             _length: 1
             _isVisible: 1
             _color: {fileID: 2100000, guid: 35fce8c65f4cfbe40a89617b93bf04ca, type: 2}
-            _leafPrefab: {fileID: 0}
           _rule:
             _successors:
             - 
